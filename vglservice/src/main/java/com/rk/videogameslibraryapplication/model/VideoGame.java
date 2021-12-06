@@ -14,7 +14,7 @@ import java.util.Objects;
  * Classe représentant le bean d'un jeu vidéo.
  * Des vérifications basiques sont effectuées concernant le type des données (champs non vides et non null)
  */
-@Entity
+@Entity(name = "VideoGame")
 @Table(name = "VideoGame")
 public class VideoGame {
 

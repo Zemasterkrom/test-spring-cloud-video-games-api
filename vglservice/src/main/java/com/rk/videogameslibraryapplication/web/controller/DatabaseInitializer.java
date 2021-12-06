@@ -41,7 +41,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "DROP TABLE VideoGame IF EXISTS",
                     "CREATE TABLE VideoGame(" +
                             "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
-                            "title VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(title)) > 0)," +
+                            "name VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(name)) > 0)," +
                             "editor VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(editor)) > 0)," +
                             "description VARCHAR NOT NULL," +
                             "releasedDate TIMESTAMP NOT NULL" +
@@ -49,7 +49,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             };
 
             // Requête d'insertion
-            String insertRequest = "INSERT INTO VideoGame(title, editor, description, releasedDate) VALUES(?, ?, ?, ?)";
+            String insertRequest = "INSERT INTO VideoGame(name, editor, description, releasedDate) VALUES(?, ?, ?, ?)";
 
             // Données
             List<Object[]> parameters = new LinkedList<Object[]>() {{
@@ -63,7 +63,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                         "Fortnite",
                         "Epic Games",
                         "Fortnite est un jeu en ligne développé par Epic Games sous la forme de différents modes de jeu qui partagent le même gameplay général et le même moteur de jeu. Les modes de jeu comprennent : Fortnite : Sauver le monde, un jeu coopératif de tir et de survie conçu pour quatre joueurs au maximum et dont le but est de combattre des zombies et de défendre des objets à l'aide de fortifications, et Fortnite Battle Royale, un jeu de battle royale en free-to-play où jusqu'à 100 joueurs se battent entre eux dans des espaces de plus en plus petits avec pour objectif d'être le dernier survivant. Ces deux modes de jeux sont déconseillés aux moins de douze ans en Europe (PEGI : 12) et aux moins de treize ans en Amérique du nord (ESRB : Teen).",
-                        new SimpleDateFormat("dd/MM/yyyy").parse("26/09/2021")
+                        new SimpleDateFormat("dd/MM/yyyy").parse("26/09/2017")
                 });
                 add(new Object[]{
                         "Assassin's Creed Valhalla",
@@ -90,7 +90,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             jdbcTemplate.query("SELECT * FROM VideoGame",
                     (vg, i) -> {
                         System.out.println("id : " + vg.getInt("id"));
-                        System.out.println("title : " + vg.getString("title"));
+                        System.out.println("name : " + vg.getString("name"));
                         System.out.println("editor : " + vg.getString("editor"));
                         System.out.println("description : " + vg.getString("description"));
                         System.out.println("releasedDate : " + vg.getDate("releasedDate") + "\n");
