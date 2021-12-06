@@ -1,20 +1,21 @@
 package com.rk.videogameslibraryapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * Classe représentant le bean d'un jeu vidéo.
  * Des vérifications basiques sont effectuées concernant le type des données (champs non vides et non null)
  */
 @Entity
+@Table(name = "VideoGame")
 public class VideoGame {
 
     /**
