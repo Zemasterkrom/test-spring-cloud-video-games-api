@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.rk</groupId>
     <artifactId>vglservice</artifactId>
-    <version>2.4.1-SNAPSHOT</version>
+    <version>2.5.1-SNAPSHOT</version>
     <name>vglservice</name>
     <description>vglservice</description>
     <properties>
@@ -53,6 +53,12 @@
             <artifactId>spring-cloud-starter-config</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
