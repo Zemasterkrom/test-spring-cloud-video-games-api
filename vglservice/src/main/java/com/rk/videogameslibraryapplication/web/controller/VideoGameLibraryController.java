@@ -6,7 +6,9 @@ import com.rk.videogameslibraryapplication.model.VideoGame;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ import java.util.Set;
 @Controller
 @CrossOrigin
 public class VideoGameLibraryController {
+
+    @Autowired
+    private ServletWebServerApplicationContext server;
 
     /**
      * Lien autowired vers le DAO VideoGameDAO
