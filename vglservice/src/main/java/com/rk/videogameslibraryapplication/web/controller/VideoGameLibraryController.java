@@ -25,9 +25,6 @@ import java.util.Set;
 @CrossOrigin
 public class VideoGameLibraryController {
 
-    @Autowired
-    private ServletWebServerApplicationContext server;
-
     /**
      * Lien autowired vers le DAO VideoGameDAO
      */
