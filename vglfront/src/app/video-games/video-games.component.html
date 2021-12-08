@@ -1,0 +1,8 @@
+<section>
+    <video-game-card [videoGame]="vg" (deleteVideoGame)="delete($event)" *ngFor="let vg of videoGames"></video-game-card>
+</section>
+<section class="buttons-fab" *ngIf="dialogStatus === 'inactive'">
+    <button (click)="showDialog()" mat-fab color="accent" class="button-add">
+        <i class="material-icons">add</i>
+    </button>
+</section>

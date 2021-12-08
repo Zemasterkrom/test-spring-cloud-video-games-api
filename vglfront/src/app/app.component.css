@@ -1,0 +1,17 @@
+mat-toolbar.extend-toolbar {
+  background-image: url("../assets/images/background.png");
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+  width: 100%;
+  z-index: 1;
+}
+
+mat-toolbar a {
+  text-decoration-color: white;
+  text-decoration-line: none;
+  color: white;
+}
+
+html {
+  height: 100% !important;
+  background-color: gray;
+}
