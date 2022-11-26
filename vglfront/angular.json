@@ -64,5 +64,8 @@
       }
     }
   },
-  "defaultProject": "video-games-library-front"
+  "defaultProject": "video-games-library-front",
+  "cli": {
+    "analytics": false
+  }
 }

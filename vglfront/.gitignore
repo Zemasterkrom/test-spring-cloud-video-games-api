@@ -1,5 +1,4 @@
 
-
 /dist
 /tmp
 /out-tsc
@@ -39,6 +38,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.angular/*
+c:/
 
 # System Files
 .DS_Store

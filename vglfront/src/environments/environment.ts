@@ -3,7 +3,7 @@ export const environment = {
   api: {
     protocol: 'http',
     host: 'localhost',
-    port: '9999',
+    port: '8080',
     endpoints: {
       allVideoGames: '/video-games/all',
       oneVideoGame: '/video-games/:id',

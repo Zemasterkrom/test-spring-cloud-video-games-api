@@ -3,22 +3,22 @@
         <mat-card-title-group>
             <mat-card-title>
                 <a href="javascript:void(0);">
-                    <span>{{ videoGame?.name }}</span>
+                    <span>{{ videoGame.name }}</span>
                 </a>
             </mat-card-title>
         </mat-card-title-group>
         <mat-card-content>
             <div class="contact-info">
-                Editeur&nbsp;:&nbsp;{{videoGame?.editor}}
+                Editeur&nbsp;:&nbsp;{{videoGame.editor}}
             </div>
             <div class="contact-info">
                 Description : {{videoGame?.description}}
             </div>
             <div class="contact-info">
-                Date de sortie : {{videoGame?.releasedDate}}
+                Date de sortie : {{videoGame.releasedDate}}
             </div>
             <div class="buttons-info">
-                <a mat-button title="Modifier" [routerLink]="['/video-games/modify', videoGame?.id]">
+                <a mat-button title="Modifier" [routerLink]="['/video-games/modify', videoGame.id]">
                     <mat-icon svgIcon="icon-edit"></mat-icon>
                 </a>
                 <button mat-button title="Supprimer" (click)="delete(videoGame)">
