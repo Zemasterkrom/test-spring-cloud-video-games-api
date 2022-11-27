@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
+import {endpoints} from '../../../environments/final';
+import {url} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {VideoGame} from '../types/videogame.type';
 import {defaultIfEmpty, filter, map} from 'rxjs/operators';
@@ -9,18 +10,12 @@ import {defaultIfEmpty, filter, map} from 'rxjs/operators';
     providedIn: 'root'
 })
 export class VideoGameService {
-    // Stocker les endpoints de l'API dans le service VideoGameService
+    // Stocker les final de l'API dans le service VideoGameService
     private readonly _apiURL: any;
 
     constructor(private _http: HttpClient) {
         this._apiURL = {};
-        let baseUrl = `${environment.api.protocol}://${environment.api.host}`;
-        if (environment.api.port) {
-            baseUrl += `:${environment.api.port}`;
-        }
-
-        // @ts-ignore
-        Object.keys(environment.api.endpoints).forEach(k => this._apiURL[k] = `${baseUrl}${environment.api.endpoints[k]}`);
+        Object.keys(endpoints).forEach((k: string) => this._apiURL[k] = `${url}${endpoints[k]}`);
     }
 
     /**
