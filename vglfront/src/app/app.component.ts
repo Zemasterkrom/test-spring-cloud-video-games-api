@@ -14,7 +14,7 @@ export class AppComponent {
    * @param _domSanitizer Sanitizer pour autoriser le chargement de ressources externes
    */
   constructor(private _matIconRegistry: MatIconRegistry, private _domSanitizer: DomSanitizer) {
-    this._matIconRegistry.addSvgIcon('icon-delete', this._domSanitizer.bypassSecurityTrustResourceUrl('/assets/images/icon-delete.svg'));
-    this._matIconRegistry.addSvgIcon('icon-edit', this._domSanitizer.bypassSecurityTrustResourceUrl('/assets/images/icon-edit.svg'));
+    this._matIconRegistry.addSvgIcon('icon-delete', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/images/icon-delete.svg'));
+    this._matIconRegistry.addSvgIcon('icon-edit', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/images/icon-edit.svg'));
   }
 }

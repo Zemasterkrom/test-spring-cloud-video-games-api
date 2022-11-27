@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  vglservice:
+    build: .
+    image: vglservice:2.5.3-SNAPSHOT
+    restart: on-failure
+    container_name: vglservice
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - ENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING}
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    networks:
+      - vglservice
+networks:
+  vglservice:
+    external:
+      name: vglnetwork

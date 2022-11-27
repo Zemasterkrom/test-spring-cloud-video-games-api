@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {endpoints} from '../../../environments/final';
-import {url} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {VideoGame} from '../types/videogame.type';
 import {defaultIfEmpty, filter, map} from 'rxjs/operators';
@@ -15,7 +14,7 @@ export class VideoGameService {
 
     constructor(private _http: HttpClient) {
         this._apiURL = {};
-        Object.keys(endpoints).forEach((k: string) => this._apiURL[k] = `${url}${endpoints[k]}`);
+        Object.keys(endpoints).forEach((k: string) => this._apiURL[k] = `${(window as any)['environment']['url']}${endpoints[k]}`);
     }
 
     /**

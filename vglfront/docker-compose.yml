@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  vglfront:
+    build: .
+    image: vglfront:2.5.4-SNAPSHOT
+    restart: on-failure
+    container_name: vglfront
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+    volumes:
+      - ./assets:/usr/share/nginx/html/assets:ro
+    ports:
+      - ${SERVER_PORT}:80
+    networks:
+      - vglfront
+networks:
+  vglfront:
+    external:
+      name: vglnetwork
