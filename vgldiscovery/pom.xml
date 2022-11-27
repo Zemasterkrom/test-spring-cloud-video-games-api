@@ -8,9 +8,9 @@
         <version>2.6.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.rk</groupId>
+    <groupId>com.zemasterkrom</groupId>
     <artifactId>vgldiscovery</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>vgldiscovery</name>
     <description>vgldiscovery</description>
     <properties>
