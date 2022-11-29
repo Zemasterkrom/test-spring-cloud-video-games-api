@@ -1,14 +1,12 @@
-package com.rk.videogameslibraryapplication.web.controller;
+package com.zemasterkrom.videogameslibraryapplication.web.controller;
 
-import com.rk.videogameslibraryapplication.dao.VideoGameRepository;
-import com.rk.videogameslibraryapplication.dao.IdentifierBuilder;
-import com.rk.videogameslibraryapplication.model.VideoGame;
+import com.zemasterkrom.videogameslibraryapplication.dao.VideoGameRepository;
+import com.zemasterkrom.videogameslibraryapplication.dao.IdentifierBuilder;
+import com.zemasterkrom.videogameslibraryapplication.model.VideoGame;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

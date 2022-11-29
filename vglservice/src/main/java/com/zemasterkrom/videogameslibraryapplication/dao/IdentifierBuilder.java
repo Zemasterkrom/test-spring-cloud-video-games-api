@@ -1,4 +1,4 @@
-package com.rk.videogameslibraryapplication.dao;
+package com.zemasterkrom.videogameslibraryapplication.dao;
 
 /**
  * Constructeur d'identifiant pour le DAO JPA

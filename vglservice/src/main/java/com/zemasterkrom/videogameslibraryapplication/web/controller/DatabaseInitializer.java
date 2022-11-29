@@ -1,4 +1,4 @@
-package com.rk.videogameslibraryapplication.web.controller;
+package com.zemasterkrom.videogameslibraryapplication.web.controller;
 
 import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.springframework.beans.factory.annotation.Autowired;

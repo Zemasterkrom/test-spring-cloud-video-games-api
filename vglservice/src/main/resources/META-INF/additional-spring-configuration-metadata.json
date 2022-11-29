@@ -3,7 +3,7 @@
     {
       "name": "spring.h2.initialize-database",
       "type": "java.lang.Boolean",
-      "description": "Activer ou désactiver l'initialisation de la base de données.",
-      "sourceType": "com.rk.videogameslibraryapplication.configuration.CustomProperties"
+      "description": "Initialize database",
+      "sourceType": "com.zemasterkrom.videogameslibraryapplication.configuration.CustomProperties"
     }
   ] }

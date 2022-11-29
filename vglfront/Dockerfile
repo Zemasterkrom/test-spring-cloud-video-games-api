@@ -6,6 +6,7 @@ RUN npm install
 RUN npm run build
 
 FROM nginx:1.20-alpine
+WORKDIR /usr/vglfront
 COPY --from=build /usr/vglfront/dist/video-games-library-front /usr/share/nginx/html
 EXPOSE 80
 

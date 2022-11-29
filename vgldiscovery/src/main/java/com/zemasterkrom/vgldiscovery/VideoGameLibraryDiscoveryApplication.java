@@ -1,4 +1,4 @@
-package com.rk.vgldiscovery;
+package com.zemasterkrom.vgldiscovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

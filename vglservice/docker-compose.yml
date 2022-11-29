@@ -3,7 +3,7 @@ version: "3"
 services:
   vglservice:
     build: .
-    image: vglservice:2.5.3-SNAPSHOT
+    image: vglservice:2.5.5-SNAPSHOT
     restart: on-failure
     container_name: vglservice
     environment:
