@@ -3,7 +3,7 @@ version: "3"
 services:
   vglfront:
     build: .
-    image: vglfront:2.5.5-SNAPSHOT
+    image: vglfront:0.4.4-SNAPSHOT
     restart: on-failure
     container_name: vglfront
     environment:

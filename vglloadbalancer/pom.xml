@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zemasterkrom</groupId>
     <artifactId>vglloadbalancer</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>vglloadbalancer</name>
     <description>vglloadbalancer</description>
     <properties>

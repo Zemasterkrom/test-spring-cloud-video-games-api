@@ -1,5 +1,5 @@
 mat-toolbar.extend-toolbar {
-  background-image: url("assets/images/background.png");
+  background-image: url("src/assets/images/background.png");
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
   width: 100%;
   z-index: 1;
