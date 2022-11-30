@@ -20,7 +20,6 @@ import java.util.Set;
  * Controller permettant de modifier la base statique de jeux vidéo présente
  */
 @Controller
-@CrossOrigin
 public class VideoGameLibraryController {
 
     /**

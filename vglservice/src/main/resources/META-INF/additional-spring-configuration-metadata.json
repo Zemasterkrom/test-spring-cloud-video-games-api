@@ -5,5 +5,10 @@
       "type": "java.lang.Boolean",
       "description": "Initialize database",
       "sourceType": "com.zemasterkrom.videogameslibraryapplication.configuration.CustomProperties"
+    },
+    {
+      "name": "spring.api.cors.allowed-origins",
+      "type": "java.lang.String",
+      "description": "Allowed CORS origins"
     }
   ] }
