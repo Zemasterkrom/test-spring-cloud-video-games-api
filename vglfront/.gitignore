@@ -4,6 +4,7 @@
 /out-tsc
 /bazel-out
 yarn.lock
+src/assets/environment.js
 
 # dependencies
 /node_modules
