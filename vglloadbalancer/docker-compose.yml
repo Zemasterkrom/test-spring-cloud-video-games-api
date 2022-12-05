@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  vglloadbalancer:
+    build: .
+    image: vglloadbalancer:1.0.4-SNAPSHOT
+    restart: on-failure
+    container_name: vglloadbalancer
+    environment:
+      - SERVER_PORT=${LOADBALANCER_SERVER_PORT}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+    ports:
+      - ${LOADBALANCER_SERVER_PORT}:${LOADBALANCER_SERVER_PORT}
+    networks:
+      - vglnetwork
+networks:
+  vglnetwork:
+    name: vglnetwork

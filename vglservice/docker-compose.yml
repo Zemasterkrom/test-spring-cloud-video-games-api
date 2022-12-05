@@ -7,12 +7,13 @@ services:
     restart: on-failure
     container_name: vglservice
     environment:
-      - SERVER_PORT=${SERVER_PORT}
+      - SERVER_PORT=${API_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
       - ENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING}
+      - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${API_SERVER_PORT}:${API_SERVER_PORT}
     networks:
       - vglservice
 networks:

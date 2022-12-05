@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  vgldiscovery:
+    build: .
+    image: vgldiscovery:1.0.3-SNAPSHOT
+    restart: on-failure
+    container_name: vgldiscovery
+    environment:
+      - SERVER_PORT=${DISCOVERY_SERVER_PORT}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+    ports:
+      - ${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}
+    networks:
+      - vglnetwork
+networks:
+  vglnetwork:
+    name: vglnetwork

@@ -3,15 +3,15 @@ version: "3.9"
 services:
   vglconfig:
     build: .
-    image: vglconfig:1.0.3-SNAPSHOT
+    image: vglconfig:1.0.5-SNAPSHOT
     restart: on-failure
     container_name: vglconfig
     environment:
-      - SERVER_PORT=${SERVER_PORT}
+      - SERVER_PORT=${CONFIG_SERVER_PORT}
       - GIT_CONFIG_REPOSITORY=${GIT_CONFIG_REPOSITORY}
       - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH}
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
     networks:
       - vglnetwork
 networks:

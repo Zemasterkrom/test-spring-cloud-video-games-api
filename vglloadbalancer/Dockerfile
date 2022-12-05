@@ -1,24 +1,21 @@
 FROM maven:3.8.6-openjdk-8-slim as builder
 
-WORKDIR /usr/vglservice
+WORKDIR /usr/vglloadbalancer
 COPY src src/
 COPY pom.xml .
 RUN mvn -f pom.xml clean package
 
 FROM openjdk:8-jdk-alpine
 
-WORKDIR /usr/vglservice
+WORKDIR /usr/vglloadbalancer
 ENV SERVER_PORT=${SERVER_PORT}
 ENV CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-ENV ENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING}
-ENV EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
-ENV ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
-COPY --from=builder /usr/vglservice/target/*.jar app.jar
-COPY ./serve.sh /usr/vglservice
+COPY --from=builder /usr/vglloadbalancer/target/*.jar app.jar
+COPY ./serve.sh /usr/vglloadbalancer
 RUN chmod +x ./serve.sh && \
     wget https://github.com/atkrad/wait4x/releases/download/v2.9.1/wait4x-linux-amd64.tar.gz && \
     tar -xvf wait4x-linux-amd64.tar.gz && \
     chmod +x ./wait4x
 EXPOSE ${SERVER_PORT}
 
-ENTRYPOINT ["sh", "-c", "sh /usr/vglservice/serve.sh"]
+ENTRYPOINT ["sh", "-c", "sh /usr/vglloadbalancer/serve.sh"]
