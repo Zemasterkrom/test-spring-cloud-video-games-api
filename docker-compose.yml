@@ -9,23 +9,37 @@ services:
     environment:
       - SERVER_PORT=${CONFIG_SERVER_PORT}
       - GIT_CONFIG_REPOSITORY=${GIT_CONFIG_REPOSITORY}
-      - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH}
+      - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH:-master}
     ports:
       - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.7-SNAPSHOT
+    image: vglservice:2.5.8-SNAPSHOT
     restart: on-failure
     container_name: vglservice
     environment:
       - SERVER_PORT=${API_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
-      - ENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING}
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
     ports:
       - ${API_SERVER_PORT}:${API_SERVER_PORT}
+    depends_on:
+      - vglconfig
+
+  vglservice-two:
+    build: ./vglservice
+    image: vglservice:2.5.7-SNAPSHOT
+    restart: on-failure
+    container_name: vglservice-two
+    environment:
+      - SERVER_PORT=${API_TWO_SERVER_PORT}
+      - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+      - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
+      - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
+    ports:
+      - ${API_TWO_SERVER_PORT}:${API_TWO_SERVER_PORT}
     depends_on:
       - vglconfig
 
