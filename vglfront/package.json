@@ -1,9 +1,9 @@
 {
   "name": "video-games-library-front",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "scripts": {
     "ng": "ng",
-    "configure": ". ./.env && /bin/sh server/configure.sh ${API_URL} src/assets/environment.js",
+    "configure": ". ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js %JSKEY% %JSVALUE% \"window['environment']['%JSKEY%'] = '%JSVALUE%';\" url ${API_URL}",
     "start": ". ./.env && npm run configure && ng serve --port \"${FRONT_SERVER_PORT}\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development"

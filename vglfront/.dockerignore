@@ -1,9 +1,3 @@
-
-/dist
-/tmp
-/out-tsc
-/bazel-out
-yarn.lock
 src/assets/environment.js
 
 # dependencies
@@ -40,6 +34,11 @@ yarn-error.log
 testem.log
 /typings
 .angular/*
+*.class
+/dist
+/tmp
+/out-tsc
+/bazel-out
 c:/
 
 # System Files
