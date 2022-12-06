@@ -4,6 +4,13 @@ if ! [ -z "${CONFIG_SERVER_URL}" ]; then
   /usr/vglservice/wait4x http "${CONFIG_SERVER_URL}" -t 60s -i 5s
 fi
 
+
+if ! [ $(echo "${DB_URL}" | grep file) ]; then
+  tcp_db_url=$(echo "${DB_URL}" | sed -E "s/(.*\/\/)(.*)\/.*/\2/g")
+  echo "Waiting for ${tcp_db_url} to be up ..."
+  /usr/vglservice/wait4x tcp "${tcp_db_url}" -t 60s -i 5s
+fi
+
 if ! [ -z "${EUREKA_SERVER_URL}" ]; then
   ENABLE_LOAD_BALANCING="true"
   echo "Waiting for ${EUREKA_SERVER_URL} to be up ..."

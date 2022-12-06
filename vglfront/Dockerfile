@@ -12,7 +12,7 @@ WORKDIR /usr/vglfront
 ENV API_URL=${API_URL}
 ENV TEST_API_URL=${TEST_API_URL}
 COPY --from=build /usr/vglfront/dist/video-games-library-front /usr/share/nginx/html
-COPY ./server/*.sh .
+COPY ./server/*.sh ./
 RUN chmod +x ./serve.sh && \
     wget https://github.com/atkrad/wait4x/releases/download/v2.9.1/wait4x-linux-amd64.tar.gz && \
     tar -xvf wait4x-linux-amd64.tar.gz && \

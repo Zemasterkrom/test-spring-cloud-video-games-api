@@ -1,10 +1,14 @@
 {
   "name": "video-games-library-front",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "scripts": {
     "ng": "ng",
-    "configure": ". ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js %JSKEY% %JSVALUE% \"window['environment']['%JSKEY%'] = '%JSVALUE%';\" url ${API_URL}",
-    "start": ". ./.env && npm run configure && ng serve --port \"${FRONT_SERVER_PORT}\"",
+    "start": "run-script-os",
+    "configure": "run-script-os",
+    "configure:linux": "touch ./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js #JSKEY# #JSVALUE# \"window['environment']['#JSKEY#'] = '#JSVALUE#';\" url ${API_URL} http://localhost:8080",
+    "configure:win32": "echo. 2>>./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js #JSKEY# #JSVALUE# \"window['environment']['#JSKEY#'] = '#JSVALUE#';\" url %API_URL% http://localhost:8080",
+    "start:linux": "touch ./.env && . ./.env && npm run configure:linux && ng serve --port ${FRONT_SERVER_PORT}",
+    "start:win32": "echo. 2>>./.env && . ./.env && npm run configure:win32 && ng serve --port %FRONT_SERVER_PORT%",
     "build": "ng build",
     "watch": "ng build --watch --configuration development"
   },
@@ -37,6 +41,7 @@
     "@angular/cli": "~15.0.1",
     "@angular/compiler-cli": "~15.0.1",
     "@types/node": "~18.11.9",
-    "typescript": "~4.8.2"
+    "typescript": "~4.8.2",
+    "run-script-os": "~1.1.6"
   }
 }

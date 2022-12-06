@@ -22,12 +22,12 @@ public class FileEnvironmentConfigurator {
     private File file;
 
     /**
-     * Key placeholder. This placeholder will be used to reference the current key in the replacement template.
+     * Key placeholder. This placeholder will be used to reference the current key in the environment template.
      */
     private String keyPlaceholder;
 
     /**
-     * Value placeholder. This placeholder will be used to reference the current value in the replacement template.
+     * Value placeholder. This placeholder will be used to reference the current value in the environment template.
      */
     private String valuePlaceholder;
 
@@ -83,27 +83,22 @@ public class FileEnvironmentConfigurator {
         } catch (NullPointerException e) {
             System.err.println("Can't pass null objects");
             error = true;
-        } catch (IOException e) {
-            System.err.println("Can't read file " + this.file.getAbsolutePath());
-            error = true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
             error = true;
         }
 
-        if (error) System.exit(0);
+        if (error) System.exit(1);
     }
 
     /**
      * Define an environment variable in the environment file
      *
-     * @param key Current processed key
-     * @param value Current processed value
+     * @param key Key currently being processed
+     * @param value Value currently being processed
      */
     public void setEnvironmentVariable(String key, String value) {
-        if (this.content.length() != 0) {
-            this.content += System.lineSeparator();
-        }
+        if (this.content.length() != 0) this.content += System.lineSeparator();
 
         this.content += this.environmentTemplate.replace(this.keyPlaceholder, key).replace(this.valuePlaceholder, value);
     }
@@ -141,7 +136,7 @@ public class FileEnvironmentConfigurator {
 
     public static void main(String[] args) {
         if (args.length < 4) {
-            System.err.println("Usage : java FileEnvironmentConfigurator.java <Path to the environment file> <Key placeholder> <Value placeholder> <Environment template>");
+            System.err.println("Usage : java FileEnvironmentConfigurator.java <Path to the environment file> <Key placeholder> <Value placeholder> <Environment template> <First key> <First value> ...");
             System.exit(1);
         }
 

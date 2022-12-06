@@ -39,7 +39,7 @@ public class VideoGame {
     /**
      * Description du jeu vidéo
      */
-    @Column(columnDefinition = "LONGVARCHAR")
+    @Column(columnDefinition = "VARCHAR")
     private String description;
 
     /**
