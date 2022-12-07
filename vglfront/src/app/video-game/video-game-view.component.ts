@@ -43,7 +43,8 @@ export class VideoGameViewComponent implements OnInit {
       )
     )
       .subscribe({
-        next: (vg: VideoGame | undefined) => this._showVideoGame(vg)
+        next: (vg: VideoGame | undefined) => this._showVideoGame(vg),
+        error: () => {this._router.navigate(['/video-games/all'])}
       });
   }
 

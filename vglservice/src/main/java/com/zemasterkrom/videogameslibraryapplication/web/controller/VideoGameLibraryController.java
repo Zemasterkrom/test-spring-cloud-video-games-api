@@ -50,19 +50,19 @@ public class VideoGameLibraryController {
     /**
      * Trouver un jeu vidéo spécifique
      * @param identifier Identifiant (ID ou nom) du jeu à chercher
-     * @return Jeu vidéo trouvé (si trouvé), sinon code 204
+     * @return Jeu vidéo trouvé (si trouvé), sinon code 204, 503 si erreur interne
      */
     @ResponseBody
     @GetMapping(value = "/video-games/{identifier}")
     public ResponseEntity<?> getVideoGame(@DefaultValue("") @PathVariable String identifier) {
         Integer integerId = IdentifierBuilder.buildId(identifier);
-        return dao.existsByIdOrName(integerId, identifier) ? new ResponseEntity<>(dao.findByIdOrName(integerId, identifier), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return dao.existsByIdOrName(integerId, identifier) ? new ResponseEntity<>(dao.findByIdOrName(integerId, identifier), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
      * Ajouter un jeu vidéo
      * @param vg Jeu vidéo à ajouter
-     * @return Réponse HTTP : 409 si déjà existant, 400 si requête mal formée, 201 si créé
+     * @return Réponse HTTP : 409 si déjà existant, 400 si requête mal formée, 201 si créé, 503 si erreur interne
      */
     @PostMapping(value = "/video-games/add")
     public ResponseEntity<?> addVideoGame(@RequestBody VideoGame vg) {
@@ -74,7 +74,7 @@ public class VideoGameLibraryController {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } catch (HibernateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 
@@ -82,7 +82,7 @@ public class VideoGameLibraryController {
      * Modifier un jeu vidéo existant
      * @param identifier Identifiant (ID ou nom) du jeu à modifier
      * @param vg Jeu vidéo à modifier
-     * @return Réponse HTTP : 204 si non existant, 400 si requête mal formée, 200 si existant et retourné
+     * @return Réponse HTTP : 404 si non existant, 400 si requête mal formée, 200 si existant et retourné, 503 si erreur interne
      */
     @PutMapping(value = "/video-games/modify/{identifier}")
     public ResponseEntity<?> modifyVideoGame(@DefaultValue("") @PathVariable("identifier") String identifier, @RequestBody VideoGame vg) {
@@ -100,17 +100,17 @@ public class VideoGameLibraryController {
                     return new ResponseEntity<>(HttpStatus.CONFLICT);
                 }
             } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (HibernateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 
     /**
      * Supprimer un jeu vidéo existant
      * @param identifier Identifiant (ID ou nom) du jeu à supprimer
-     * @return Réponse HTTP : 204 si non existant, 400 si requête mal formée, 200 si supprimé
+     * @return Réponse HTTP : 404 si non existant, 400 si requête mal formée, 200 si supprimé, 503 si erreur interne
      */
     @Transactional
     @DeleteMapping(value = "/video-games/delete/{identifier}")
@@ -122,10 +122,25 @@ public class VideoGameLibraryController {
                 dao.deleteByIdOrName(integerId, identifier);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (HibernateException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
+    }
+
+    /**
+     * Supprimer tous les jeux vidéo
+     * @return Réponse HTTP : 200 si OK, 503 si erreur interne
+     */
+    @Transactional
+    @DeleteMapping(value = "/video-games/delete")
+    public ResponseEntity<?> deleteAllVideoGames() {
+        try {
+            dao.deleteAll();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (HibernateException e) {
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 }

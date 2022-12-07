@@ -1,12 +1,12 @@
 {
   "name": "video-games-library-front",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "scripts": {
     "ng": "ng",
     "start": "run-script-os",
     "configure": "run-script-os",
-    "configure:linux": "touch ./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js #JSKEY# #JSVALUE# \"window['environment']['#JSKEY#'] = '#JSVALUE#';\" url ${API_URL} http://localhost:8080",
-    "configure:win32": "echo. 2>>./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js #JSKEY# #JSVALUE# \"window['environment']['#JSKEY#'] = '#JSVALUE#';\" url %API_URL% http://localhost:8080",
+    "configure:linux": "touch ./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js @JSKEY@ @JSVALUE@ \"window['environment']['@JSKEY@'] = '@JSVALUE@';\" url ${API_URL} http://localhost:8080",
+    "configure:win32": "echo. 2>>./.env && . ./.env && javac server/FileEnvironmentConfigurator.java && java server/FileEnvironmentConfigurator.java src/assets/environment.js @JSKEY@ @JSVALUE@ \"window['environment']['@JSKEY@'] = '@JSVALUE@';\" url %API_URL% http://localhost:8080",
     "start:linux": "touch ./.env && . ./.env && npm run configure:linux && ng serve --port ${FRONT_SERVER_PORT}",
     "start:win32": "echo. 2>>./.env && . ./.env && npm run configure:win32 && ng serve --port %FRONT_SERVER_PORT%",
     "build": "ng build",

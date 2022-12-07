@@ -5,4 +5,4 @@ if ! [ -z "${CONFIG_SERVER_URL}" ]; then
   /usr/vgldiscovery/wait4x http "${CONFIG_SERVER_URL}" -t 60s -i 5s
 fi
 
-java -jar /usr/vgldiscovery/app.jar -DSERVER_PORT=${SERVER_PORT} -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+java -jar /usr/vgldiscovery/app.jar -DSERVER_PORT=9999 -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL}

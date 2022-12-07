@@ -16,7 +16,7 @@ services:
 
   vglconfig:
     build: ./vglconfig
-    image: vglconfig:1.0.5-SNAPSHOT
+    image: vglconfig:1.0.6-SNAPSHOT
     restart: on-failure
     container_name: vglconfig
     environment:
@@ -24,11 +24,11 @@ services:
       - GIT_CONFIG_REPOSITORY=${GIT_CONFIG_REPOSITORY}
       - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH:-master}
     ports:
-      - ${CONFIG_SERVER_PORT}:${CONFIG_SERVER_PORT}
+      - ${CONFIG_SERVER_PORT}:8888
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.9-SNAPSHOT
+    image: vglservice:2.5.10-SNAPSHOT
     restart: on-failure
     container_name: vglservice
     environment:
@@ -40,14 +40,14 @@ services:
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
     ports:
-      - ${API_SERVER_PORT}:${API_SERVER_PORT}
+      - ${API_SERVER_PORT}:8080
     depends_on:
       - vglconfig
       - vgldatabase
 
   vglservice-two:
     build: ./vglservice
-    image: vglservice:2.5.9-SNAPSHOT
+    image: vglservice:2.5.10-SNAPSHOT
     restart: on-failure
     container_name: vglservice-two
     environment:
@@ -59,7 +59,7 @@ services:
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
     ports:
-      - ${API_TWO_SERVER_PORT}:${API_TWO_SERVER_PORT}
+      - ${API_TWO_SERVER_PORT}:8080
     depends_on:
       - vglconfig
       - vgldatabase
@@ -73,7 +73,7 @@ services:
       - SERVER_PORT=${DISCOVERY_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
     ports:
-      - ${DISCOVERY_SERVER_PORT}:${DISCOVERY_SERVER_PORT}
+      - ${DISCOVERY_SERVER_PORT}:9999
     depends_on:
       - vglconfig
 
@@ -88,7 +88,7 @@ services:
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${LOADBALANCER_ALLOWED_ORIGINS}
     ports:
-      - ${LOADBALANCER_SERVER_PORT}:${LOADBALANCER_SERVER_PORT}
+      - ${LOADBALANCER_SERVER_PORT}:10000
     depends_on:
       - vglconfig
       - vgldiscovery
@@ -97,7 +97,7 @@ services:
 
   vglfront:
     build: ./vglfront
-    image: vglfront:0.4.9-SNAPSHOT
+    image: vglfront:0.4.10-SNAPSHOT
     restart: on-failure
     container_name: vglfront
     environment:
