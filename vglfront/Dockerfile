@@ -2,8 +2,8 @@ FROM node:16-alpine3.15 as build
 
 WORKDIR /usr/vglfront
 COPY ./src src/
-COPY *.json *.lock ./
-RUN npm install
+COPY *.json ./
+RUN npm ci
 RUN npm run build
 
 FROM nginx:1.20-alpine

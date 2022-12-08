@@ -3,7 +3,7 @@ set -e
 
 if ! [ -z "${CONFIG_SERVER_URL}" ]; then
   echo "Waiting for ${CONFIG_SERVER_URL} to be up ..."
-  /usr/vglloadbalancer/wait4x http "${CONFIG_SERVER_URL}" -t 60s -i 5s
+  /usr/vglloadbalancer/wait4x http "${CONFIG_SERVER_URL}/vgl-loadbalancer.properties" -t 60s -i 5s -q --expect-status-code 200
 fi
 
 if ! [ -z "${EUREKA_SERVER_URL}" ]; then

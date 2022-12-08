@@ -1,7 +1,7 @@
 #!/bin/sh -e
 if ! [ -z "${CONFIG_SERVER_URL}" ]; then
   echo "Waiting for ${CONFIG_SERVER_URL} to be up ..."
-  /usr/vglservice/wait4x http "${CONFIG_SERVER_URL}" -t 60s -i 5s
+  /usr/vglservice/wait4x http "${CONFIG_SERVER_URL}/video-games-service.properties" -t 60s -i 5s -q --expect-status-code 200
 fi
 
 
