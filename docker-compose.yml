@@ -16,11 +16,10 @@ services:
 
   vglconfig:
     build: ./vglconfig
-    image: vglconfig:1.0.6-SNAPSHOT
+    image: vglconfig:1.0.9-SNAPSHOT
     restart: on-failure
     container_name: vglconfig
     environment:
-      - SERVER_PORT=${CONFIG_SERVER_PORT}
       - GIT_CONFIG_REPOSITORY=${GIT_CONFIG_REPOSITORY}
       - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH:-master}
     ports:
@@ -28,14 +27,13 @@ services:
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.10-SNAPSHOT
+    image: vglservice:2.5.12-SNAPSHOT
     restart: on-failure
     container_name: vglservice
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - SERVER_PORT=${API_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
@@ -47,14 +45,13 @@ services:
 
   vglservice-two:
     build: ./vglservice
-    image: vglservice:2.5.10-SNAPSHOT
+    image: vglservice:2.5.12-SNAPSHOT
     restart: on-failure
     container_name: vglservice-two
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - SERVER_PORT=${API_TWO_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
@@ -66,11 +63,10 @@ services:
 
   vgldiscovery:
     build: ./vgldiscovery
-    image: vgldiscovery:1.0.3-SNAPSHOT
+    image: vgldiscovery:1.0.4-SNAPSHOT
     restart: on-failure
     container_name: vgldiscovery
     environment:
-      - SERVER_PORT=${DISCOVERY_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
     ports:
       - ${DISCOVERY_SERVER_PORT}:9999
@@ -79,11 +75,10 @@ services:
 
   vglloadbalancer:
     build: ./vglloadbalancer
-    image: vglloadbalancer:1.0.4-SNAPSHOT
+    image: vglloadbalancer:1.0.5-SNAPSHOT
     restart: on-failure
     container_name: vglloadbalancer
     environment:
-      - SERVER_PORT=${LOADBALANCER_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
       - EUREKA_SERVER_URL=${EUREKA_SERVER_URL}
       - ALLOWED_ORIGINS=${LOADBALANCER_ALLOWED_ORIGINS}
@@ -97,11 +92,10 @@ services:
 
   vglfront:
     build: ./vglfront
-    image: vglfront:0.4.10-SNAPSHOT
+    image: vglfront:0.4.11-SNAPSHOT
     restart: on-failure
     container_name: vglfront
     environment:
-      - SERVER_PORT=${FRONT_SERVER_PORT}
       - API_URL=${API_URL}
       - TEST_API_URL=${TEST_API_URL}
     volumes:

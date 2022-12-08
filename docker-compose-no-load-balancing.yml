@@ -16,11 +16,10 @@ services:
 
   vglconfig:
     build: ./vglconfig
-    image: vglconfig:1.0.6-SNAPSHOT
+    image: vglconfig:1.0.9-SNAPSHOT
     restart: on-failure
     container_name: vglconfig-nlb
     environment:
-      - SERVER_PORT=${CONFIG_SERVER_PORT}
       - GIT_CONFIG_REPOSITORY=${GIT_CONFIG_REPOSITORY}
       - GIT_CONFIG_BRANCH=${GIT_CONFIG_BRANCH:-master}
     ports:
@@ -28,14 +27,13 @@ services:
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.10-SNAPSHOT
+    image: vglservice:2.5.12-SNAPSHOT
     restart: on-failure
     container_name: vglservice-nlb
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
-      - SERVER_PORT=${API_SERVER_PORT}
       - CONFIG_SERVER_URL=${CONFIG_SERVER_URL}
       - ALLOWED_ORIGINS=${API_ALLOWED_ORIGINS}
     ports:
@@ -46,11 +44,10 @@ services:
 
   vglfront:
     build: ./vglfront
-    image: vglfront:0.4.10-SNAPSHOT
+    image: vglfront:0.4.11-SNAPSHOT
     restart: on-failure
     container_name: vglfront-nlb
     environment:
-      - SERVER_PORT=${FRONT_SERVER_PORT}
       - API_URL=${API_URL}
       - TEST_API_URL=${TEST_API_URL_NLB}
     volumes:
