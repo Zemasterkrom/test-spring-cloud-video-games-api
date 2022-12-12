@@ -1,3 +1,4 @@
+*.env
 src/assets/environment.js
 
 # dependencies
@@ -39,7 +40,6 @@ testem.log
 /tmp
 /out-tsc
 /bazel-out
-c:/
 
 # System Files
 .DS_Store

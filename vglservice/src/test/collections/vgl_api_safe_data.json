@@ -1,0 +1,636 @@
+{
+	"info": {
+		"_postman_id": "5ba6827b-c75b-407f-a43b-86ffdd8372b8",
+		"name": "VGL API tests (safe data)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete every video game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 200 for a complete successful deletion\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/all`,",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Database should be empty after complete deletion\", () => {",
+							"        pm.expect(response.json().length).to.eql(0);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let body = [",
+							"    { name: \"Test\", editor: \"Test2\", description: \"\", releasedDate: \"03/11/1972\" },",
+							"    { name: \"Test2\", editor: \"Test\", description: \"Test\", releasedDate: \"03/11/100\" },",
+							"    { name: \"Test3\",  editor: \"Test3\", description: \"Test\", releasedDate: \"03/11/2022\" },",
+							"    { name: \"Test4\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/100\" }",
+							"];",
+							"",
+							"for (const object of body) {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
+							"        method: \"POST\",",
+							"        body: object",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/delete",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a video game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 200 for a deleted game\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let currentlyProcessedVideoGame = DataSetProcessor.getCurrentlyProcessedData();",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/${currentlyProcessedVideoGame[\"name\"]}`, ",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Video game should no longer exist after deletion\", () => {",
+							"        pm.expect(response.code).to.eql(404);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let body = [",
+							"    { name: \"Test\", editor: \"Test2\", description: \"\", releasedDate: \"03/11/1972\" },",
+							"    { name: \"Test2\", editor: \"Test\", description: \"Test\", releasedDate: \"03/11/100\" },",
+							"    { name: \"Test3\", editor: \"Test3\", description: \"Test\", releasedDate: \"03/11/2022\" },",
+							"    { name: \"Test4\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/2022\" }",
+							"];",
+							"",
+							"DataSetProcessor(pm).setInitCallback(() => {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
+							"        method: \"DELETE\",",
+							"    }, () => {",
+							"        for (const object of DataSetProcessor.getInitialDataSet()) {",
+							"            pm.sendRequest({",
+							"                url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
+							"                method: \"POST\",",
+							"                header: {",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: \"raw\",",
+							"                    raw: object",
+							"                }",
+							"            });",
+							"        }",
+							"    });",
+							"}).setTestData(body);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/delete/{{name}}",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"delete",
+						"{{name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a video game",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"DataSetProcessor(pm).setInitCallback(() => {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
+							"        method: \"DELETE\",",
+							"    });",
+							"}).setTestData([",
+							"    { name: \"Test\", editor: \"Test\", description: \"\", releasedDate: \"03/11/1971\" },",
+							"    { name: \"Test2\", editor: \"Test\", description: \"\", releasedDate: \"03/11/1971\" },",
+							"    { name: \"Test3\", editor: \"Test\", description: \"\", releasedDate: \"03/11/2022\" },",
+							"    { name: \"Test4\", editor: \"Test\", description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida.",
+							"",
+							"Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla. Sed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.`, releasedDate: \"03/11/100\" }",
+							"]);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 201 for a new game\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let currentlyProcessedVideoGame = DataSetProcessor.getCurrentlyProcessedData();",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/${currentlyProcessedVideoGame[\"name\"]}`, ",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Created object must match the filled JSON data used to create the video game\", function() {",
+							"        pm.expect(response.code).to.eql(200);",
+							"        response = response.json();",
+							"",
+							"        delete currentlyProcessedVideoGame.id;",
+							"",
+							"        pm.expect(response.name).to.equal(currentlyProcessedVideoGame.name);",
+							"        pm.expect(response.editor).to.equal(currentlyProcessedVideoGame.editor);",
+							"        pm.expect(response.description).to.equal(currentlyProcessedVideoGame.description);",
+							"        pm.expect(new Date(response.releasedDate)).to.eql(new Date(currentlyProcessedVideoGame.releasedDate));",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{name}}\",\"editor\":\"{{editor}}\",\"description\":\"{{description}}\",\"releasedDate\":\"{{releasedDate}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/add",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify a video game",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let body = [",
+							"    { name: \"Test\", newName: \"Test5\", editor: \"Test2\", description: \"\", releasedDate: \"03/11/1972\" },",
+							"    { name: \"Test2\", newName: \"Test6\", editor: \"Test\", description: \"Test\", releasedDate: \"03/11/100\" },",
+							"    { name: \"Test3\", newName: \"Test7\", editor: \"Test3\", description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida.",
+							"",
+							"Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla. Sed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.`, releasedDate: \"03/11/2022\" },",
+							"    { name: \"Test4\", newName: \"Test8\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/2022\" }",
+							"];",
+							"",
+							"DataSetProcessor(pm).setInitCallback(() => {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
+							"        method: \"DELETE\",",
+							"    }, () => {",
+							"        for (const object of DataSetProcessor.getInitialDataSet()) {",
+							"            delete object.newName;",
+							"            ",
+							"            pm.sendRequest({",
+							"                url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
+							"                method: \"POST\",",
+							"                header: {",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: \"raw\",",
+							"                    raw: object",
+							"                }",
+							"            });",
+							"        }",
+							"    });",
+							"}).setTestData(body);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 200 for an updated video game\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let currentlyProcessedVideoGame = DataSetProcessor.getCurrentlyProcessedData();",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/${currentlyProcessedVideoGame[\"newName\"]}`, ",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Created object must match the filled JSON data used to modify the video game\", () => {",
+							"        pm.expect(response.code).to.eql(200);",
+							"        response = response.json();",
+							"",
+							"        delete currentlyProcessedVideoGame.id;",
+							"",
+							"        pm.expect(response.name).to.equal(currentlyProcessedVideoGame.newName);",
+							"        pm.expect(response.editor).to.equal(currentlyProcessedVideoGame.editor);",
+							"        pm.expect(response.description).to.equal(currentlyProcessedVideoGame.description);",
+							"        pm.expect(new Date(response.releasedDate)).to.eql(new Date(currentlyProcessedVideoGame.releasedDate));",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{newName}}\",\"editor\":\"{{editor}}\",\"description\":\"{{description}}\",\"releasedDate\":\"{{releasedDate}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/modify/{{name}}",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"modify",
+						"{{name}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"/**",
+					" * Collection pre-request script allowing to test a set of data for the same request without having to make several Postman distinct requests.",
+					" * ",
+					" * It also allows you to test different data sets for different queries in a same collection, and to shuffle them. You can even use the data set in the request URL and define an initialization / end callback.",
+					" * ",
+					" * Copy and paste this code into the collection pre-request script. Insert DataSetProcessor(pm, postman).processRequests(); in the tests collection tab.",
+					" * Inside the request pre-request script, simply call setTestData with the JSON array of the data set. Now you can reference the data inside the Postman body.",
+					" * ",
+					" * @author Zemasterkrom",
+					" */",
+					"",
+					"/**",
+					" * HOW TO USE :",
+					" * ============",
+					" * Put DataSetProcessor(pm).setTestData(<array of JSON objects / JSON object>) inside the request pre-request script.",
+					" * ",
+					" * You can reference reference the data inside the body / request URL with {{<name of JSON object key>}}. You can get the DataSetProcessor data using DataSetProcessor.getInitialDataSet(), DataSetProcessor.getCurrentlyProcessedData(), DataSetProcessor.getCurrentDataSet().",
+					" * ",
+					" * If you want to shuffle the test data set, use DataSetProcessor(pm).setTestData(<array of JSON objects / JSON object>, true);",
+					" * ",
+					" * You can define an initialization callback before calling setTestData by executing DataSetProcessor(pm).setInitCallback(<function>).",
+					" * ",
+					" * You can define an end callback in the requests tests tab by calling DataSetProcessor.setEndCallback(<function>).",
+					" */",
+					"",
+					"DataSetProcessor = (pm = {}, postman = {}) => {",
+					"    if (!pm || typeof pm !== \"object\" || pm.constructor.name !== \"Postman\") {",
+					"        throw new Error(\"Unable to execute the DataSetProcessor without the global Postman object (pm) !\");",
+					"    }",
+					"",
+					"    let privateDataSetProcessorStateObject = {};",
+					"",
+					"    const shuffleArray = (arr) => {",
+					"        for (let i = arr.length - 1; i > 0; i--) {",
+					"            const j = Math.floor(Math.random() * (i + 1));",
+					"            [arr[i], arr[j]] = [arr[j], arr[i]];",
+					"        }",
+					"",
+					"        return arr;",
+					"    }",
+					"",
+					"    /**",
+					"     * Allows to define an initialization callback that will be executed before running the test series (before the requests)",
+					"     * ",
+					"     * @param {Function} initCallback Initialization callback",
+					"     * ",
+					"     * @return {DataSetProcessor}",
+					"     */",
+					"    const setInitCallback = (initCallback = () => {}) => {",
+					"        if (typeof initCallback === \"function\") {",
+					"            DataSetProcessor.state.initCallback = initCallback;",
+					"        }",
+					"",
+					"        return DataSetProcessor;",
+					"    }",
+					"",
+					"",
+					"    /**",
+					"     * Allows to define an end callback that will be executed at the end of the test series (after the requests)",
+					"     * ",
+					"     * @param {Function} endCallback End callback",
+					"     * ",
+					"     * @return {DataSetProcessor}",
+					"     */",
+					"    const setEndCallback = (endCallback = () => {}) => {",
+					"        const dsp = pm.globals.get(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\");",
+					"        const emptyDataSet = !dsp ? true : Array.isArray(dsp.dataSet) ? !dsp.dataSet.length : !dsp.dataSet;",
+					"",
+					"        if (typeof endCallback === \"function\" && emptyDataSet && (!dsp || !dsp.fatalError)) {",
+					"            endCallback();",
+					"        }",
+					"",
+					"        return DataSetProcessor;",
+					"    }",
+					"",
+					"    /**",
+					"     * Automatically update the variables that needs to be sent in the body.",
+					"     * ",
+					"     * @param {Array|Object} dataSet JSON object or JSON data set array",
+					"     * @param {Boolean} shuffle Allows to shuffle the data set",
+					"     * ",
+					"     * @throws {TypeError} Object not corresponding to an array of JSON objects",
+					"     */",
+					"    const setTestData = (dataSet = [], shuffle = true) => {",
+					"        delete DataSetProcessor.state.dataSetNotTransmitted;",
+					"",
+					"        let init = false;",
+					"",
+					"",
+					"        try {",
+					"            // Data set / request change detected : script reset",
+					"            if ((!DataSetProcessor.state.dataSet || !DataSetProcessor.state.dataSet.length) || JSON.stringify(dataSet) !== JSON.stringify(DataSetProcessor.state.initialDataSet) || pm.info.requestId !== DataSetProcessor.state.requestId || (typeof shuffle === \"boolean\" && shuffle !== DataSetProcessor.state.shuffle)) {",
+					"                DataSetProcessor.state.dataSetChangeDetected = true;",
+					"                DataSetProcessor.state.shuffle = shuffle;",
+					"",
+					"                delete DataSetProcessor.state.fatalError;",
+					"                delete DataSetProcessor.state.dataSet;",
+					"                delete DataSetProcessor.state.initialDataSet;",
+					"                delete DataSetProcessor.state.currentlyProcessedData;",
+					"",
+					"                for (const key of Object.keys(DataSetProcessor.state.dataSetKeys ? DataSetProcessor.state.dataSetKeys : {})) {",
+					"                    pm.variables.unset(key);",
+					"                }",
+					"",
+					"                if (!Array.isArray(dataSet)) {",
+					"                    if (Object.prototype.toString.call(dataSet) !== \"[object Object]\") {",
+					"                        DataSetProcessor.state.fatalError = true;",
+					"                        clearVariables();",
+					"                        throw new TypeError(\"Non-JSON object found !\");",
+					"                    }",
+					"",
+					"                    DataSetProcessor.state.dataSet = [dataSet];",
+					"                } else {",
+					"                    for (const data of dataSet) {",
+					"                        if (Object.prototype.toString.call(data) !== \"[object Object]\") {",
+					"                            DataSetProcessor.state.fatalError = true;",
+					"                            clearVariables();",
+					"                            throw new TypeError(\"Non-JSON object found !\");",
+					"                        }",
+					"                    }",
+					"                }",
+					"",
+					"                DataSetProcessor.state.dataSetKeys = {};",
+					"",
+					"                if (pm.info.requestId !== DataSetProcessor.state.requestId) {",
+					"                    DataSetProcessor.state.requestId = pm.info.requestId;",
+					"                }",
+					"",
+					"                DataSetProcessor.state.initialDataSet = JSON.parse(JSON.stringify(dataSet));",
+					"                DataSetProcessor.state.dataSet = shuffle ? shuffleArray(JSON.parse(JSON.stringify(dataSet))) : JSON.parse(JSON.stringify(dataSet));",
+					"",
+					"                init = true;",
+					"                end = false;",
+					"            }",
+					"",
+					"            DataSetProcessor.state.currentlyProcessedData = DataSetProcessor.state.dataSet.length ? DataSetProcessor.state.dataSet.shift() : {};",
+					"",
+					"            // Unset the previous body values",
+					"            for (const key of Object.keys(DataSetProcessor.state.dataSetKeys)) {",
+					"                pm.variables.unset(key);",
+					"            }",
+					"",
+					"            // Set new body values",
+					"            for (const key of Object.keys(DataSetProcessor.state.currentlyProcessedData)) {",
+					"                pm.variables.set(key, DataSetProcessor.state.currentlyProcessedData[key]);",
+					"",
+					"                if (!DataSetProcessor.state.dataSetKeys.hasOwnProperty(key)) {",
+					"                    DataSetProcessor.state.dataSetKeys[key] = true;",
+					"                }",
+					"            }",
+					"",
+					"            // Update the DataSetProcessor state to handle the remaining data objects to test",
+					"            pm.globals.set(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\", DataSetProcessor.state);",
+					"",
+					"            // Call the initialization callback at the beginning of the data set test",
+					"            if (init && typeof DataSetProcessor.state.initCallback === \"function\") DataSetProcessor.state.initCallback();",
+					"        } catch (e) {",
+					"            clearVariables();",
+					"            throw new TypeError(\"Non-JSON object found !\");",
+					"        }",
+					"    }",
+					"",
+					"    /**",
+					"     * Allows to clear all of the used variables. Call this function at the end of the tests if necessary but it's completely optional as it's handled automatically by this script.",
+					"     * ",
+					"     * @param {Boolean} all Allows to delete the global DataSetProcessor state object at the end of the tests",
+					"     */",
+					"    const clearVariables = (all = false) => {",
+					"        if ((DataSetProcessor.state.dataSet && DataSetProcessor.state.dataSet.length === 0) || !DataSetProcessor.state.dataSet ||",
+					"            DataSetProcessor.state.dataSetNotTransmitted) {",
+					"            let fatalError = DataSetProcessor.state.fatalError;",
+					"            privateDataSetProcessorStateObject = JSON.parse(JSON.stringify(pm.globals.get(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\")));",
+					"            privateDataSetProcessorStateObject = privateDataSetProcessorStateObject ? privateDataSetProcessorStateObject : {};",
+					"",
+					"            for (const key of Object.keys(DataSetProcessor.state.dataSetKeys ? DataSetProcessor.state.dataSetKeys : {})) {",
+					"                pm.variables.unset(key);",
+					"            }",
+					"",
+					"            if (all) {",
+					"                DataSetProcessor.state = {};",
+					"                pm.globals.unset(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\");",
+					"            } else {",
+					"                DataSetProcessor.state = {",
+					"                    fatalError: fatalError",
+					"                };",
+					"",
+					"                pm.globals.set(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\", DataSetProcessor.state);",
+					"            }",
+					"",
+					"        }",
+					"    }",
+					"",
+					"",
+					"    /**",
+					"     * Loop through requests with the registered data set",
+					"     * ",
+					"     * @throws {Error} Unable to continue the execution if an error occurred in the pre-request loading script",
+					"     */",
+					"    const processRequests = () => {",
+					"        if (!postman || typeof postman !== \"object\" || postman.constructor.name !== \"PostmanLegacyTestInterface\") {",
+					"            throw new Error(\"Unable to loop through the data set without the global Postman object (postman) !\");",
+					"        }",
+					"",
+					"        // processRequests must be called after setTestData. If not, then the DataSetProcessor isn't set up / instanciated, and we need to reset the data set",
+					"        if (!DataSetProcessor.state.dataSetChangeDetected || DataSetProcessor.state.dataSetNotTransmitted || DataSetProcessor.state.fatalError) {",
+					"            delete DataSetProcessor.state.dataSet;",
+					"        }",
+					"",
+					"",
+					"        if (DataSetProcessor.state.dataSet && DataSetProcessor.state.dataSet.length && !DataSetProcessor.state.fatalError) {",
+					"            // There are remaining data to test : we continue with the next JSON data object",
+					"            postman.setNextRequest(pm.info.requestId);",
+					"        } else {",
+					"            // All tests have been executed or a fatal error occurred : we reset the DataSetProcessor variables",
+					"            if (DataSetProcessor.state.fatalError) {",
+					"                clearVariables(true);",
+					"                throw new Error(\"Unable to continue since a fatal error has occurred in the pre-request script\");",
+					"            }",
+					"",
+					"            if (typeof DataSetProcessor.state.endCallback === \"function\") {",
+					"                DataSetProcessor.state.endCallback();",
+					"            }",
+					"",
+					"            clearVariables(true);",
+					"        }",
+					"    }",
+					"",
+					"    /**",
+					"     * Retrieve the currently processed data",
+					"     * ",
+					"     * @returns {Object} Data set JSON object",
+					"     */",
+					"    const getCurrentlyProcessedData = () => {",
+					"        return Object.prototype.toString.call(privateDataSetProcessorStateObject.currentlyProcessedData) === \"[object Object]\" ? JSON.parse(JSON.stringify(privateDataSetProcessorStateObject.currentlyProcessedData)) : {};",
+					"    }",
+					"",
+					"    /**",
+					"     * Retrieve the initial data set",
+					"     * ",
+					"     * @returns {Array} Initial array of JSON data set objects",
+					"     */",
+					"    const getInitialDataSet = () => {",
+					"        return Array.isArray(privateDataSetProcessorStateObject.initialDataSet) ? JSON.parse(JSON.stringify(privateDataSetProcessorStateObject.initialDataSet)) : [];",
+					"    }",
+					"",
+					"    /**",
+					"     * Retrieve the current data set",
+					"     * ",
+					"     * @returns {Array} Current array of JSON data set objects",
+					"     */",
+					"    const getCurrentDataSet = () => {",
+					"        return Array.isArray(privateDataSetProcessorStateObject.dataSet) ? JSON.parse(JSON.stringify(privateDataSetProcessorStateObject.dataSet)) : [];",
+					"    }",
+					"",
+					"    DataSetProcessor.state = pm.globals.get(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\");",
+					"",
+					"    // Initialize the DataSetProcessor state object",
+					"    if (Object.prototype.toString.call(pm.globals.get(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\")) !== \"[object Object]\") {",
+					"        DataSetProcessor.state = {};",
+					"        pm.globals.set(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\", DataSetProcessor.state);",
+					"    }",
+					"",
+					"    privateDataSetProcessorStateObject = DataSetProcessor.state;",
+					"",
+					"    // We have to detect if the dataset has been initialized or not in the request pre-request script",
+					"    if (pm.info.eventName === \"prerequest\") {",
+					"        // Only allow data set initialization in the pre-request script",
+					"        DataSetProcessor.setTestData = setTestData;",
+					"        DataSetProcessor.setInitCallback = setInitCallback;",
+					"        DataSetProcessor.state.dataSetNotTransmitted = true;",
+					"",
+					"        pm.globals.set(\"dsp-abc30720-6cff-47de-b6db-55f0ba697f99\", DataSetProcessor.state);",
+					"    } else {",
+					"        // Allows processing of requests in the test script",
+					"        DataSetProcessor.setEndCallback = setEndCallback;",
+					"        DataSetProcessor.processRequests = processRequests;",
+					"    }",
+					"",
+					"    DataSetProcessor.clearVariables = clearVariables;",
+					"    DataSetProcessor.getCurrentlyProcessedData = getCurrentlyProcessedData;",
+					"    DataSetProcessor.getInitialDataSet = getInitialDataSet;",
+					"    DataSetProcessor.getCurrentDataSet = getCurrentDataSet;",
+					"",
+					"    return DataSetProcessor;",
+					"};",
+					"",
+					"DataSetProcessor(pm);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"DataSetProcessor(pm, postman).processRequests();"
+				]
+			}
+		}
+	]
+}
