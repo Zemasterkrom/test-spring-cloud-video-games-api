@@ -163,9 +163,7 @@
 							"    { name: \"Test\", editor: \"Test\", description: \"\", releasedDate: \"03/11/1971\" },",
 							"    { name: \"Test2\", editor: \"Test\", description: \"\", releasedDate: \"03/11/1971\" },",
 							"    { name: \"Test3\", editor: \"Test\", description: \"\", releasedDate: \"03/11/2022\" },",
-							"    { name: \"Test4\", editor: \"Test\", description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida.",
-							"",
-							"Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla. Sed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.`, releasedDate: \"03/11/100\" }",
+							"    { name: \"Test4\", editor: \"Test\", description: \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida. Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla.\\\\nSed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.\", releasedDate: \"03/11/100\" }",
 							"]);"
 						],
 						"type": "text/javascript"
@@ -193,7 +191,7 @@
 							"",
 							"        pm.expect(response.name).to.equal(currentlyProcessedVideoGame.name);",
 							"        pm.expect(response.editor).to.equal(currentlyProcessedVideoGame.editor);",
-							"        pm.expect(response.description).to.equal(currentlyProcessedVideoGame.description);",
+							"        pm.expect(response.description.replace(/\\n/g, \"\")).to.equal(currentlyProcessedVideoGame.description.replace(/\\\\n/g, \"\"));",
 							"        pm.expect(new Date(response.releasedDate)).to.eql(new Date(currentlyProcessedVideoGame.releasedDate));",
 							"    });",
 							"});"
@@ -237,9 +235,7 @@
 							"let body = [",
 							"    { name: \"Test\", newName: \"Test5\", editor: \"Test2\", description: \"\", releasedDate: \"03/11/1972\" },",
 							"    { name: \"Test2\", newName: \"Test6\", editor: \"Test\", description: \"Test\", releasedDate: \"03/11/100\" },",
-							"    { name: \"Test3\", newName: \"Test7\", editor: \"Test3\", description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida.",
-							"",
-							"Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla. Sed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.`, releasedDate: \"03/11/2022\" },",
+							"    { name: \"Test3\", newName: \"Test7\", editor: \"Test3\", description: \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras cursus, eros in aliquet ornare, nunc massa sollicitudin nulla, id suscipit ante arcu molestie nisi. Aliquam erat volutpat. Nunc ac scelerisque metus. Sed sed nunc posuere, gravida ligula quis, rutrum velit. Suspendisse potenti. Integer non posuere mauris. Etiam eget egestas purus. Nunc tempus ligula sapien, bibendum vulputate est elementum volutpat. Nunc a faucibus turpis. Fusce eu urna vel quam fringilla gravida. Donec bibendum tellus consectetur ipsum efficitur varius. Morbi a sodales nulla.\\\\nSed id purus commodo orci fringilla tincidunt non sed ipsum. Aliquam nec neque nisi. Sed risus leo, vestibulum eget facilisis ut, egestas id leo. Curabitur sapien tortor, bibendum nec tortor at, mollis fringilla eros. Morbi tempor, justo et pellentesque placerat, nisl justo rhoncus felis, sed porttitor neque justo ac sapien. Suspendisse rhoncus leo ornare tellus finibus vehicula. Vestibulum sit amet diam ante. Suspendisse ac mauris condimentum, ornare leo vel, sodales est. Integer orci nisi, dictum id nulla eleifend, efficitur luctus ex. Suspendisse quis magna ligula. Phasellus mauris ante, tempus eget finibus eget, pulvinar vitae lacus. Quisque interdum commodo mi. Curabitur in quam sed odio vulputate pulvinar.\", releasedDate: \"03/11/2022\" },",
 							"    { name: \"Test4\", newName: \"Test8\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/2022\" }",
 							"];",
 							"",
@@ -291,7 +287,7 @@
 							"",
 							"        pm.expect(response.name).to.equal(currentlyProcessedVideoGame.newName);",
 							"        pm.expect(response.editor).to.equal(currentlyProcessedVideoGame.editor);",
-							"        pm.expect(response.description).to.equal(currentlyProcessedVideoGame.description);",
+							"        pm.expect(response.description.replace(/\\n/g, \"\")).to.equal(currentlyProcessedVideoGame.description.replace(/\\\\n/g, \"\"));",
 							"        pm.expect(new Date(response.releasedDate)).to.eql(new Date(currentlyProcessedVideoGame.releasedDate));",
 							"    });",
 							"});"

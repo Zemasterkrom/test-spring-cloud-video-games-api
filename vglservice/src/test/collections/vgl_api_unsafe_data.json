@@ -258,15 +258,12 @@
 							"                },",
 							"                body: {",
 							"                    mode: \"raw\",",
-							"                    raw: [",
-							"                        { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
-							"                    ]",
+							"                    raw: { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
 							"                }",
 							"            });",
 							"    });",
 							"}).setTestData([",
 							"    { name: '\"\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
-							"    { name: '\"Test2\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
 							"    { name: '\"Test\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"\"' },",
 							"    { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"\"' },",
 							"    { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"Invalid date\"' },",
@@ -325,6 +322,83 @@
 			"response": []
 		},
 		{
+			"name": "Trying to add an already existing video game",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"DataSetProcessor(pm).setInitCallback(() => {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
+							"        method: \"DELETE\",",
+							"    }, () => {",
+							"        pm.sendRequest({",
+							"                url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
+							"                method: \"POST\",",
+							"                header: {",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: \"raw\",",
+							"                    raw: { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
+							"                }",
+							"            });",
+							"    });",
+							"}).setTestData([",
+							"    { name: '\"Test2\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' }",
+							"]);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 409 when trying to add an already existing video game\", () => {",
+							"    pm.response.to.have.status(409);",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/all`,",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Video games list should not grow since the video game data is badly formatted\", () => {",
+							"        pm.expect(response.json().length).to.eql(1);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":{{name}},\"editor\":{{editor}},\"description\":{{description}},\"releasedDate\":{{releasedDate}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/add",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Trying to incorrectly modify a video game",
 			"event": [
 				{
@@ -336,7 +410,13 @@
 							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
 							"        method: \"DELETE\",",
 							"    }, () => {",
-							"         pm.sendRequest({",
+							"        let data = [",
+							"            { name: \"Test\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" },",
+							"            { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
+							"        ];",
+							"",
+							"        for (const object of data) {",
+							"            pm.sendRequest({",
 							"                url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
 							"                method: \"POST\",",
 							"                header: {",
@@ -344,23 +424,20 @@
 							"                },",
 							"                body: {",
 							"                    mode: \"raw\",",
-							"                    raw: [",
-							"                        { name: \"Test\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" },",
-							"                        { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
-							"                    ]",
+							"                    raw: object",
 							"                }",
 							"            });",
+							"        };",
 							"    });",
 							"}).setTestData([",
-							"    { name: '\"\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
-							"    { name: '\"Test2\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
-							"    { name: '\"Test\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"\"' },",
-							"    { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"\"' },",
-							"    { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"Invalid date\"' },",
-							"    { name: null, editor: '\"Test', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
-							"    { name: '\"Test\"', editor: null, description: '\"\"', releasedDate: '\"03/11/1971\"' },",
-							"    { name: '\"Test\"', editor: '\"Test\"', description: '\"\"', releasedDate: null },",
-							"]);"
+							"        { name: '\"\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
+							"        { name: '\"Test\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"\"' },",
+							"        { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"\"' },",
+							"        { name: '\"Test\"', editor: '\"Test\"', description: null, releasedDate: '\"Invalid date\"' },",
+							"        { name: null, editor: '\"Test', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
+							"        { name: '\"Test\"', editor: null, description: '\"\"', releasedDate: '\"03/11/1971\"' },",
+							"        { name: '\"Test\"', editor: '\"Test\"', description: '\"\"', releasedDate: null },",
+							"    ]);"
 						],
 						"type": "text/javascript"
 					}
@@ -387,6 +464,105 @@
 							"    method: \"GET\",",
 							"}, (_, response) => {",
 							"    pm.test(\"Video game must remain the same because the video game data is badly formatted\", () => {",
+							"        response = response.json();",
+							"",
+							"        pm.expect(response.name).to.eql(\"Test\");",
+							"        pm.expect(response.editor).to.eql(\"Test\");",
+							"        pm.expect(response.description).to.eql(\"Description\");",
+							"        pm.expect(response.releasedDate).to.eql(\"03/11/1971\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":{{name}},\"editor\":{{editor}},\"description\":{{description}},\"releasedDate\":{{releasedDate}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{vglservice-url}}/video-games/modify/Test",
+					"host": [
+						"{{vglservice-url}}"
+					],
+					"path": [
+						"video-games",
+						"modify",
+						"Test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Trying to modify a video game name with an already existing one",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"DataSetProcessor(pm).setInitCallback(() => {",
+							"    pm.sendRequest({",
+							"        url: `${pm.environment.get(\"vglservice-url\")}/video-games/delete`,",
+							"        method: \"DELETE\",",
+							"    }, () => {",
+							"        let data = [",
+							"            { name: \"Test\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" },",
+							"            { name: \"Test2\", editor: \"Test\", description: \"Description\", releasedDate: \"03/11/1971\" }",
+							"        ];",
+							"",
+							"        for (const object of data) {",
+							"            pm.sendRequest({",
+							"                url: `${pm.environment.get(\"vglservice-url\")}/video-games/add`,",
+							"                method: \"POST\",",
+							"                header: {",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: \"raw\",",
+							"                    raw: object",
+							"                }",
+							"            });",
+							"        };",
+							"    });",
+							"}).setTestData([",
+							"    { name: '\"Test2\"', editor: '\"Test\"', description: '\"\"', releasedDate: '\"03/11/1971\"' },",
+							"]);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"HTTP response code must be 409 for an already existing video game\", () => {",
+							"    pm.response.to.have.status(409);",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/all`,",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"No video game should be added since we only modify a video game\", () => {",
+							"        pm.expect(response.json().length).to.eql(2);",
+							"    });",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: `${pm.environment.get(\"vglservice-url\")}/video-games/Test`,",
+							"    method: \"GET\",",
+							"}, (_, response) => {",
+							"    pm.test(\"Video game must remain the same because the video game name is already referenced\", () => {",
 							"        response = response.json();",
 							"",
 							"        pm.expect(response.name).to.eql(\"Test\");",

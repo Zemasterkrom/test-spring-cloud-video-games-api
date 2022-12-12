@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class VideoGame {
     /**
      * Nom du jeu vidéo
      */
+    @NotBlank
     @Column(unique = true)
     private String name;
 
@@ -34,17 +36,19 @@ public class VideoGame {
      * Editeur du jeu vidéo
      */
     @NotBlank
+    @NotNull
     private String editor;
 
     /**
      * Description du jeu vidéo
      */
-    @Column(columnDefinition = "VARCHAR")
+    @NotNull
     private String description;
 
     /**
      * Date de sortie du jeu
      */
+    @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date releasedDate;
 
