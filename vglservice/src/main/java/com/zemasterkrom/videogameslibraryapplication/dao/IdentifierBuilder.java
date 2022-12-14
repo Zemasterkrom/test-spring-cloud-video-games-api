@@ -1,14 +1,14 @@
 package com.zemasterkrom.videogameslibraryapplication.dao;
 
 /**
- * Constructeur d'identifiant pour le DAO JPA
+ * Identifier constructor for the JPA DAO
  */
 public class IdentifierBuilder {
 
     /**
-     * Construire un identifiant entier à partir d'une chaîne
-     * @param identifier Identifiant en chaîne
-     * @return -1 si la chaîne ne correspond pas à un entier, l'entier correspondant sinon
+     * Construct an integer identifier from a string
+     * @param identifier String identifier
+     * @return -1 if the string is not an integer, the corresponding integer otherwise
      */
     public static Integer buildId(String identifier) {
         if (identifier == null || !identifier.matches("^[0-9]+$")) {

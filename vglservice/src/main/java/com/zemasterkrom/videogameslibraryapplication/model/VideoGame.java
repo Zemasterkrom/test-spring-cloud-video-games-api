@@ -11,55 +11,52 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * Classe représentant le bean d'un jeu vidéo.
- * Des vérifications basiques sont effectuées concernant le type des données (champs non vides et non null)
+ * Class representing the entity of a video game.
  */
 @Entity(name = "VideoGame")
 @Table(name = "VideoGame")
 public class VideoGame {
 
     /**
-     * Identifiant du jeu vidéo
+     * Video game identifier
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
-     * Nom du jeu vidéo
+     * Video game name
      */
     @NotBlank
     @Column(unique = true)
     private String name;
 
     /**
-     * Editeur du jeu vidéo
+     * Video game editor
      */
     @NotBlank
     @NotNull
     private String editor;
 
     /**
-     * Description du jeu vidéo
+     * Video game description
      */
     @NotNull
     private String description;
 
     /**
-     * Date de sortie du jeu
+     * Video game release date
      */
     @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date releasedDate;
 
-    /**
-     * Constructeur par défaut de VideoGame
-     */
     public VideoGame() {
         this.id = -1;
         this.name = "";
         this.editor = "";
         this.description = "";
+
         try {
             this.releasedDate = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/0001");
         } catch (ParseException ignored) {

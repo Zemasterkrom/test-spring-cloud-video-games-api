@@ -1,11 +1,6 @@
 {
   "properties": [
     {
-      "name": "spring.api.cors.allowed-origins",
-      "type": "java.lang.String",
-      "description": "Allowed CORS origins."
-    },
-    {
       "name": "eureka.client.eureka-server-connect-max-retries",
       "type": "java.lang.Integer",
       "description": "Max number of retries for the Eureka server checker before timing out.",

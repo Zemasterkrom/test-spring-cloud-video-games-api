@@ -27,7 +27,7 @@ services:
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.14-SNAPSHOT
+    image: vglservice:2.5.16-SNAPSHOT
     restart: on-failure
     container_name: vglservice-nlb
     environment:

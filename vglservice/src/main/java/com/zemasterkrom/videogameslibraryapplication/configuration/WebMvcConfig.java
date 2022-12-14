@@ -6,10 +6,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Allows to add CORS mappings to the API
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    @Value("${spring.api.cors.allowed-origins}")
+    @Value("${spring.api.cors.allowed-origins:}")
     private String allowedOrigins;
 
     @Override

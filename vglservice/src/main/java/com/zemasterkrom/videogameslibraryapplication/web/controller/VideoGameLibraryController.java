@@ -17,58 +17,62 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Controller permettant de modifier la base statique de jeux vidéo présente
+ * Controller allowing to modify the video games library
  */
 @Controller
 public class VideoGameLibraryController {
 
     /**
-     * Lien autowired vers le DAO VideoGameDAO
+     * Autowired link towards the VGL DAO
      */
+    private final VideoGameRepository vgldao;
+
     @Autowired
-    VideoGameRepository dao;
+    public VideoGameLibraryController(VideoGameRepository dao) {
+        this.vgldao = dao;
+    }
 
     /**
-     * En cas d'auto-détection d'une syntaxe incorrecte, renvoyer une erreur 400
-     * @return Réponse avec erreur 400 BAD REQUEST
+     * In case of incorrect syntax auto-detection, return a 400 error
+     * @return 400 BAD REQUEST response
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> returnBadRequestError() {
+    public ResponseEntity<Integer> returnBadRequestError() {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
-     * Trouver tous les jeux vidéo triés par ID
-     * @return Liste de tous les jeux vidéo existants
+     * Find all video games sorted by ID
+     * @return List of all existing video games
      */
     @ResponseBody
     @GetMapping(value = "/video-games/all")
     public Set<VideoGame> getAllVideoGames() {
-        return dao.findAll();
+        return vgldao.findAll();
     }
 
     /**
-     * Trouver un jeu vidéo spécifique
-     * @param identifier Identifiant (ID ou nom) du jeu à chercher
-     * @return Jeu vidéo trouvé (si trouvé), sinon code 204, 503 si erreur interne
+     * Find a specific video game
+     * @param identifier Identifier (ID or name) of the game to search
+     * @return Video game found (if found), otherwise code 204, 503 if internal error
      */
     @ResponseBody
     @GetMapping(value = "/video-games/{identifier}")
     public ResponseEntity<?> getVideoGame(@DefaultValue("") @PathVariable String identifier) {
         Integer integerId = IdentifierBuilder.buildId(identifier);
-        return dao.existsByIdOrName(integerId, identifier) ? new ResponseEntity<>(dao.findByIdOrName(integerId, identifier), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return vgldao.existsByIdOrName(integerId, identifier) ? new ResponseEntity<>(vgldao.findByIdOrName(integerId, identifier), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
-     * Ajouter un jeu vidéo
-     * @param vg Jeu vidéo à ajouter
-     * @return Réponse HTTP : 409 si déjà existant, 400 si requête mal formée, 201 si créé, 503 si erreur interne
+     * Add a video game
+     * @param vg Video game to add
+     * @return HTTP response: 409 if already existing, 400 if request badly formed, 201 if created, 503 if internal error
      */
     @PostMapping(value = "/video-games/add")
-    public ResponseEntity<?> addVideoGame(@RequestBody VideoGame vg) {
+    public ResponseEntity<Integer> addVideoGame(@RequestBody VideoGame vg) {
         try {
-            if (!dao.existsByIdOrName(vg.getId(), vg.getName())) {
-                VideoGame result = dao.save(vg);
+            if (!vgldao.existsByIdOrName(vg.getId(), vg.getName())) {
+                VideoGame result = vgldao.save(vg);
                 return result.getId() >= 0 ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -79,22 +83,22 @@ public class VideoGameLibraryController {
     }
 
     /**
-     * Modifier un jeu vidéo existant
-     * @param identifier Identifiant (ID ou nom) du jeu à modifier
-     * @param vg Jeu vidéo à modifier
-     * @return Réponse HTTP : 404 si non existant, 400 si requête mal formée, 200 si existant et retourné, 503 si erreur interne
+     * Modify an existing video game
+     * @param identifier Identifier (ID or name) of the game to modify
+     * @param vg Video game to modify
+     * @return HTTP response: 404 if not existing, 400 if request badly formed, 200 if existing and returned, 503 if internal error
      */
     @PutMapping(value = "/video-games/modify/{identifier}")
-    public ResponseEntity<?> modifyVideoGame(@DefaultValue("") @PathVariable("identifier") String identifier, @RequestBody VideoGame vg) {
+    public ResponseEntity<Integer> modifyVideoGame(@DefaultValue("") @PathVariable("identifier") String identifier, @RequestBody VideoGame vg) {
         try {
             Integer integerId = IdentifierBuilder.buildId(identifier);
-            Optional<VideoGame> rvg = dao.findByIdOrName(integerId, identifier);
+            Optional<VideoGame> rvg = vgldao.findByIdOrName(integerId, identifier);
 
             if (rvg.isPresent()) {
                 VideoGame realVideoGame = rvg.get();
-                if ((realVideoGame.getId().equals(vg.getId()) || realVideoGame.getName().equals(vg.getName())) || !dao.existsByIdOrName(vg.getId(), vg.getName())) {
+                if ((realVideoGame.getId().equals(vg.getId()) || realVideoGame.getName().equals(vg.getName())) || !vgldao.existsByIdOrName(vg.getId(), vg.getName())) {
                     vg.setId(realVideoGame.getId());
-                    VideoGame result = dao.save(vg);
+                    VideoGame result = vgldao.save(vg);
                     return result.getId() >= 0 ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 } else {
                     return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -108,18 +112,18 @@ public class VideoGameLibraryController {
     }
 
     /**
-     * Supprimer un jeu vidéo existant
-     * @param identifier Identifiant (ID ou nom) du jeu à supprimer
-     * @return Réponse HTTP : 404 si non existant, 400 si requête mal formée, 200 si supprimé, 503 si erreur interne
+     * Delete an existing video game
+     * @param identifier Identifier (ID or name) of the game to delete
+     * @return HTTP response: 404 if not existing, 400 if badly formed request, 200 if deleted, 503 if internal error
      */
     @Transactional
     @DeleteMapping(value = "/video-games/delete/{identifier}")
-    public ResponseEntity<?> deleteVideoGame(@DefaultValue("") @PathVariable("identifier") String identifier) {
+    public ResponseEntity<Integer> deleteVideoGame(@DefaultValue("") @PathVariable("identifier") String identifier) {
         try {
             Integer integerId = IdentifierBuilder.buildId(identifier);
 
-            if (dao.existsByIdOrName(integerId, identifier)) {
-                dao.deleteByIdOrName(integerId, identifier);
+            if (vgldao.existsByIdOrName(integerId, identifier)) {
+                vgldao.deleteByIdOrName(integerId, identifier);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -130,14 +134,14 @@ public class VideoGameLibraryController {
     }
 
     /**
-     * Supprimer tous les jeux vidéo
-     * @return Réponse HTTP : 200 si OK, 503 si erreur interne
+     * Delete all games
+     * @return HTTP response: 200 if OK, 503 if internal error
      */
     @Transactional
     @DeleteMapping(value = "/video-games/delete")
-    public ResponseEntity<?> deleteAllVideoGames() {
+    public ResponseEntity<Integer> deleteAllVideoGames() {
         try {
-            dao.deleteAll();
+            vgldao.deleteAll();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (HibernateException e) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
