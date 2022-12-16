@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zemasterkrom</groupId>
     <artifactId>vgldiscovery</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.7-SNAPSHOT</version>
     <name>vgldiscovery</name>
     <description>vgldiscovery</description>
     <properties>
@@ -28,7 +28,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
             <version>3.1.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
