@@ -11,5 +11,23 @@
       "type": "java.lang.Integer",
       "description": "Delay between each Eureka server connection retry in milliseconds.",
       "defaultValue": 12000
+    },
+    {
+      "name": "spring.cloud.gateway.single-cache.expire-after-access",
+      "type": "java.lang.Long",
+      "description": "Expire after access cache delay (seconds).",
+      "defaultValue": 1440
+    },
+    {
+      "name": "spring.cloud.gateway.single-cache.expire-after-write",
+      "type": "java.lang.Long",
+      "description": "Expire after write cache delay (seconds).",
+      "defaultValue": 1440
+    },
+    {
+      "name": "spring.cloud.gateway.single-cache.maximum-size",
+      "type": "java.lang.Integer",
+      "description": "Maximum size of the cache (entries).",
+      "defaultValue": 60
     }
   ] }
