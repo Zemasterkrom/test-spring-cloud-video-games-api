@@ -81,7 +81,7 @@ services:
 
   vglloadbalancer:
     build: ./vglloadbalancer
-    image: vglloadbalancer:1.2.2-SNAPSHOT
+    image: vglloadbalancer:1.2.3-SNAPSHOT
     restart: on-failure
     container_name: vglloadbalancer
     environment:
