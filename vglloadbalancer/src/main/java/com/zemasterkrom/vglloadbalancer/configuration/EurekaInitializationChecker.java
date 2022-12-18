@@ -30,7 +30,7 @@ public class EurekaInitializationChecker implements ApplicationContextAware {
     private String eurekaServerUrl;
 
     /**
-     * Max number of retries to the Eureka Server
+     * Max number of retries on the Eureka Server
      */
     @Value("${eureka.client.eureka-server-connect-max-retries:10}")
     private int eurekaServerMaxRetries;
@@ -47,6 +47,9 @@ public class EurekaInitializationChecker implements ApplicationContextAware {
     @Value("${eureka.client.enabled:true}")
     private boolean eurekaClientEnabled;
 
+    /**
+     * Eureka initialization checker constructor. Allows to redefine the Eureka server URL to get its base URL.
+     */
     public EurekaInitializationChecker() {
         try {
             URL eurekaServerUrlParts = new URL(this.eurekaServerUrl);
@@ -56,6 +59,11 @@ public class EurekaInitializationChecker implements ApplicationContextAware {
         }
     }
 
+    /**
+     * Try to establish a connection to the Eureka server before fully creating the context
+     *
+     * @param applicationContext Application context
+     */
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) {
         if (this.eurekaClientEnabled) {

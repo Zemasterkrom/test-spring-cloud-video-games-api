@@ -16,6 +16,9 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 
 
+/**
+ * Video Games Library alternative controller using cache for GET requests
+ */
 @Controller
 @CrossOrigin
 public class ResilientCacheController {
@@ -34,6 +37,13 @@ public class ResilientCacheController {
         this.cache = c;
     }
 
+    /**
+     * Each GET request is forwarded to /vgl-cache if it fails. Instead of accessing the database content, the cache data is used.
+     *
+     * @param exchange Data exchange
+     *
+     * @return Cached data if available
+     */
     @GetMapping(value = "/vgl-cache", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getVGLCache(ServerWebExchange exchange) {
         String originalPath = "";
@@ -46,7 +56,7 @@ public class ResilientCacheController {
         return ResponseEntity.ok(
                 this.cache.get(originalPath) != null ?
                         this.cache.get(originalPath).toString() :
-                        "[]"
+                        "{}"
         );
     }
 }

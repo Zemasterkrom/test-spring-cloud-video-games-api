@@ -6,12 +6,26 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Cache bean instantiator
+ */
 @Configuration
 @ConfigurationProperties(prefix = "spring.cloud.gateway.single-cache")
 public class CacheConfigurator {
 
+    /**
+     * Expiration time after access (in ms)
+     */
     private Long expireAfterAccess = 1440L;
+
+    /**
+     * Expiration time after write (in ms)
+     */
     private Long expireAfterWrite = 1440L;
+
+    /**
+     * Maximum entries in the cache
+     */
     private Long maximumSize = 60L;
 
     public Long getExpireAfterAccess() {
