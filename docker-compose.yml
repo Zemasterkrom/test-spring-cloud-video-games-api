@@ -27,7 +27,7 @@ services:
 
   vglservice:
     build: ./vglservice
-    image: vglservice:2.5.18-SNAPSHOT
+    image: vglservice:2.5.19-SNAPSHOT
     restart: on-failure
     container_name: vglservice
     environment:
@@ -47,7 +47,7 @@ services:
 
   vglservice-two:
     build: ./vglservice
-    image: vglservice:2.5.18-SNAPSHOT
+    image: vglservice:2.5.19-SNAPSHOT
     restart: on-failure
     container_name: vglservice-two
     environment:
