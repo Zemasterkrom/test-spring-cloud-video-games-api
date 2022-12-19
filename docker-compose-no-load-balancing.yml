@@ -46,7 +46,7 @@ services:
 
   vglfront:
     build: ./vglfront
-    image: vglfront:0.4.13-SNAPSHOT
+    image: vglfront:0.4.14-SNAPSHOT
     restart: on-failure
     container_name: vglfront-nlb
     environment:
