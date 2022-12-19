@@ -27,7 +27,6 @@ chrome-profiler-events*.json
 
 # misc
 /.sass-cache
-*lock*
 /coverage
 /libpeerconnection.log
 npm-debug.log

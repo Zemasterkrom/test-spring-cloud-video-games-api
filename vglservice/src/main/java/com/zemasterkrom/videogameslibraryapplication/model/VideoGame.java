@@ -42,6 +42,7 @@ public class VideoGame {
      * Video game description
      */
     @NotNull
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     /**
