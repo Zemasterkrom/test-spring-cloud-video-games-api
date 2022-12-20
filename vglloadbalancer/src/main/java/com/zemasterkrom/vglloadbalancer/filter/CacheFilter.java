@@ -79,7 +79,7 @@ public class CacheFilter implements GlobalFilter, Ordered {
             HttpMethod method = exchange.getRequest().getMethod();
 
             if (responseCode != null && method != null && method.equals(HttpMethod.GET) && responseCode.equals(HttpStatus.OK)) {
-                CacheFilter.this.cache.put(exchange.getRequest().getPath(), body);
+                CacheFilter.this.cache.put(exchange.getRequest().getPath().toString(), body);
             }
 
             return Mono.just(body != null ? body : "");

@@ -20,7 +20,6 @@ import java.util.Optional;
  * Video Games Library alternative controller using cache for GET requests
  */
 @Controller
-@CrossOrigin
 public class ResilientCacheController {
     /**
      * Caffeine cache
@@ -51,7 +50,9 @@ public class ResilientCacheController {
 
         if (attr != null) {
             originalPath = attr.iterator().hasNext() ? attr.iterator().next().getPath() : "";
+            System.out.println(originalPath);
         }
+        System.out.println(this.cache.get(originalPath));
 
         return ResponseEntity.ok(
                 this.cache.get(originalPath) != null ?
