@@ -39,7 +39,7 @@ services:
     ports:
       - ${API_SERVER_PORT}:8080
     volumes:
-      - ./vglservice/src/java/resources/application.properties:/usr/vglservice/application.properties
+      - ./vglservice/src/main/resources/application.properties:/usr/vglservice/application.properties
     depends_on:
       - vglconfig
       - vgldatabase
