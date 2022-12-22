@@ -4,6 +4,10 @@ description: Test API with Load Balancing (without Docker and with Docker)
 runs:
   using: "composite"
   steps:
+    - name: Create front environment file if it does not exist
+      shell: bash
+      run: echo '' >> vglfront/.env
+
     - name: Load environment file
       id: lb_env
       uses: falti/dotenv-action@v1.0.2

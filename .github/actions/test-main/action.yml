@@ -4,9 +4,9 @@ description: Test API without Load Balancing (without Docker and with Docker)
 runs:
   using: "composite"
   steps:
-    - name: Create environment file if not exists
-      run: echo '' >> vglfront/.env
+    - name: Create front environment file if it does not exist
       shell: bash
+      run: echo '' >> vglfront/.env
 
     - name: Load environment file
       id: nlb_env
