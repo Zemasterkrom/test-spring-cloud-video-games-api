@@ -1,0 +1,47 @@
+name: Test API with Load Balancing
+description: Test API with Load Balancing (without Docker and with Docker)
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create environment file if not exists
+      run: echo '' >> vglfront/.env
+      shell: bash
+
+    - name: Load environment file
+      uses: falti/dotenv-action@v1.0.2
+
+    - name: Load front environment file
+      uses: falti/dotenv-action@v1.0.2
+      with:
+        path: vglfront/.env
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Set up Newman
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: npm install -g newman
+
+    - name: Wait for API to be ready
+      uses: cygnetdigital/wait_for_response@v2.0.0
+      with:
+        url: ${{steps.dotenv.outputs.api_url}}/video-games/all
+        timeout: 200000
+        interval: 10000
+
+    - name: Wait for front to be ready
+      uses: cygnetdigital/wait_for_response@v2.0.0
+      with:
+        url: http://localhost:${{steps.dotenv.outputs.front_server_port}}/
+        timeout: 120000
+        interval: 10000
+
+    - name: Run Postman tests on Spring Boot server (Load Balancer)
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: |
+        newman run vglservice/src/test/collections/vgl_api_safe_data.json -e vglservice/src/test/environments/vgl_api_loadbalancer_endpoint.json
+        newman run vglservice/src/test/collections/vgl_api_unsafe_data.json -e vglservice/src/test/environments/vgl_api_loadbalancer_endpoint.json

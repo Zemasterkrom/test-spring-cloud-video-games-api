@@ -1,0 +1,22 @@
+name: Build main packages
+description: Build Spring Boot API, Config server, and front npm packages
+
+runs:
+  using: "composite"
+  steps:
+    - name: Load main environment file
+      uses: falti/dotenv-action@v1.0.2
+      with:
+        path: no-load-balancing.env
+
+    - name: Build API package
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: mvn -DfinalName=vglservice clean package -f vglservice/pom.xml
+
+    - name: Build Config server package
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: mvn -DfinalName=vglconfig clean package -f vglconfig/pom.xml
+
+    - name: Build npm front package
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: npm install --prefix vglfront

@@ -1,0 +1,16 @@
+name: Build Load Balancing related packages
+description: Build Eureka discovery server and Load Balancer server packages
+
+runs:
+  using: "composite"
+  steps:
+    - name: Load Load Balancer environment file
+      uses: falti/dotenv-action@v1.0.2
+
+    - name: Build Load balancer package
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: mvn -DfinalName=vglloadbalancer clean package -f vglloadbalancer/pom.xml
+
+    - name: Build Eureka discovery server package
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: mvn -DfinalName=vgldiscovery clean package -f vgldiscovery/pom.xml
