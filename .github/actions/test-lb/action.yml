@@ -9,9 +9,11 @@ runs:
       shell: bash
 
     - name: Load environment file
+      id: lb_env
       uses: falti/dotenv-action@v1.0.2
 
     - name: Load front environment file
+      id: front_env
       uses: falti/dotenv-action@v1.0.2
       with:
         path: vglfront/.env
@@ -28,16 +30,16 @@ runs:
       run: npm install -g newman
 
     - name: Wait for API to be ready
-      uses: cygnetdigital/wait_for_response@v2.0.0
+      uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
-        url: ${{steps.dotenv.outputs.api_url}}/video-games/all
-        timeout: 200000
+        url: ${{ steps.lb_env.outputs.api_url }}/video-games/all
+        timeout: 120000
         interval: 10000
 
     - name: Wait for front to be ready
-      uses: cygnetdigital/wait_for_response@v2.0.0
+      uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
-        url: http://localhost:${{steps.dotenv.outputs.front_server_port}}/
+        url: http://localhost:${{ steps.front_env.outputs.front_server_port }}/
         timeout: 120000
         interval: 10000
 

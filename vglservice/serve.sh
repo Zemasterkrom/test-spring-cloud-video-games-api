@@ -7,4 +7,4 @@ else
   ENABLE_LOAD_BALANCING="false"
 fi
 
-java -jar -Dspring.config.location=file:/usr/vglservice/application.properties /usr/vglservice/app.jar -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL} -DENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING} -DEUREKA_SERVER_URL=${EUREKA_SERVER_URL} -DALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+java -Dspring.config.location=file:/usr/vglservice/application.properties -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL} -DENABLE_LOAD_BALANCING=${ENABLE_LOAD_BALANCING} -DEUREKA_SERVER_URL=${EUREKA_SERVER_URL} -DALLOWED_ORIGINS=${ALLOWED_ORIGINS} -jar /usr/vglservice/app.jar

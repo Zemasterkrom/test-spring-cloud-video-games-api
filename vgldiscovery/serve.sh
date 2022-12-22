@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-java -jar -Dspring.config.location=file:/usr/vgldiscovery/application.properties /usr/vgldiscovery/app.jar -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL}
+java -Dspring.config.location=file:/usr/vgldiscovery/application.properties -DCONFIG_SERVER_URL=${CONFIG_SERVER_URL} -jar /usr/vgldiscovery/app.jar
