@@ -3,7 +3,7 @@ on: push
 
 jobs:
   build-test-nlb:
-    name: Build and test without load balancing
+    name: Build and test without Load Balancing
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +32,7 @@ jobs:
         uses: ./.github/actions/test-main
 
   build-test-nlb-docker:
-    name: Build and test without load balancing (Docker)
+    name: Build and test without Load Balancing (Docker)
     runs-on: ubuntu-latest
 
     steps:
