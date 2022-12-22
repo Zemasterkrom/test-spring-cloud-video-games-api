@@ -41,7 +41,7 @@ jobs:
         run: echo 'FRONT_SERVER_PORT=4201' > vglfront/.env
 
       - name: Launch containers
-        run: GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build
+        run: GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose --env-file no-load-balancing.env -f docker-compose-no-load-balancing.yml up -d --build
 
       - name: Test API and front
         uses: ./.github/actions/test-main
