@@ -4,10 +4,6 @@ description: Test API with Load Balancing (without Docker and with Docker)
 runs:
   using: "composite"
   steps:
-    - name: Create environment file if not exists
-      run: echo '' >> vglfront/.env
-      shell: bash
-
     - name: Load environment file
       id: lb_env
       uses: falti/dotenv-action@v1.0.2
@@ -39,7 +35,7 @@ runs:
     - name: Wait for front to be ready
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
-        url: http://localhost:${{ steps.front_env.outputs.front_server_port }}/
+        url: http://localhost:${{ steps.front_env.outputs.front_server_port || steps.lb_env.outputs.front_server_port }}/
         timeout: 120000
         interval: 10000
 
