@@ -32,8 +32,10 @@ runs:
     - name: Wait for API to be ready
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
-        url: ${{ steps.lb_env.outputs.api_url }}/video-games/all
-        timeout: 120000
+        url: ${{ steps.lb_env.outputs.api_url }}/video-games/add
+        method: 'POST'
+        expected-status: '400'
+        timeout: 240000
         interval: 10000
 
     - name: Wait for front to be ready
@@ -43,7 +45,7 @@ runs:
         timeout: 120000
         interval: 10000
 
-    - name: Run Postman tests on Spring Boot server (Load Balancer)
+    - name: Run Postman tests on Spring Boot server (Load Balancing)
       shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: |
         newman run vglservice/src/test/collections/vgl_api_safe_data.json -e vglservice/src/test/environments/vgl_api_loadbalancer_endpoint.json
