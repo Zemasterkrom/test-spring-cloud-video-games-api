@@ -31,6 +31,12 @@ runs:
       shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: npm install -g newman
 
+    - name: Test
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: |
+        sleep 320
+        curl '${{ steps.lb_env.outputs.api_url }}/video-games/add' || (echo 'next try' && curl 'http://127.0.0.1:8080/video-games/add')
+
     - name: Wait for API to be ready
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
