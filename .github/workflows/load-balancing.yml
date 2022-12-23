@@ -1,10 +1,13 @@
-name: Build and test with Load Balancing (Ubuntu)
+name: Build and test with Load Balancing
 on: push
 
 jobs:
   build-test-lb:
-    name: Build and test with Load Balancing
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} - Build and test with Load Balancing
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -41,8 +44,11 @@ jobs:
         uses: ./.github/actions/test-lb
 
   build-test-lb-docker:
-    name: Build and test with Load Balancing (Docker)
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} - Build and test with Load Balancing (Docker)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -53,6 +59,12 @@ jobs:
           echo $'\nFRONT_SERVER_PORT=4201' >> .env
           echo $'\nAPI_ALLOWED_ORIGINS=http://localhost:4201' >> .env
           echo $'\nLOADBALANCER_ALLOWED_ORIGINS=http://localhost:4201' >> .env
+
+      - name: Install Docker on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install docker
+          colima start
 
       - name: Launch containers
         run: GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build

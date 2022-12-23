@@ -100,7 +100,7 @@ services:
 
   vglfront:
     build: ./vglfront
-    image: vglfront:0.5.0-SNAPSHOT
+    image: vglfront:0.5.1-SNAPSHOT
     restart: on-failure
     container_name: vglfront
     environment:
