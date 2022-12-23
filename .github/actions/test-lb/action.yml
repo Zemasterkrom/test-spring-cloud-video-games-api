@@ -29,13 +29,20 @@ runs:
       shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: npm install -g newman
 
+    - name: Test
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      run: |
+        sleep 500
+        curl --silent -X POST "${{ steps.lb_env.outputs.api_url }}/video-games/add"
+        curl --silent -X POST "http://127.0.0.1:10000/video-games/add"
+
     - name: Wait for API to be ready
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
         url: ${{ steps.lb_env.outputs.api_url }}/video-games/add
         method: 'POST'
         expected-status: '400'
-        timeout: 400000
+        timeout: 500000
         interval: 10000
 
     - name: Wait for front to be ready
