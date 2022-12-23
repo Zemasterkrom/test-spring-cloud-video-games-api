@@ -76,7 +76,10 @@ jobs:
           colima start
 
       - name: Launch containers
-        run: GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build
+        run: |
+          GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vglconfig vglservice
+          GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vgldiscovery vglloadbalancer 
+          GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build
 
       - name: Test API and front
         uses: ./.github/actions/test-lb
