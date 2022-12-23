@@ -60,10 +60,19 @@ jobs:
           echo $'\nAPI_ALLOWED_ORIGINS=http://localhost:4201' >> .env
           echo $'\nLOADBALANCER_ALLOWED_ORIGINS=http://localhost:4201' >> .env
 
+      - name: Clean up memory
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
       - name: Install Docker on macOS
         if: runner.os == 'macOS'
         run: |
-          brew install docker
+          brew install docker docker-compose
+          mkdir -p ~/.docker/cli-plugins
+          ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
           colima start
 
       - name: Launch containers
