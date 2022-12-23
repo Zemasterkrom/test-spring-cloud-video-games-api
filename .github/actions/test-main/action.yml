@@ -35,7 +35,7 @@ runs:
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
         url: ${{ steps.nlb_env.outputs.api_url }}/video-games/all
-        timeout: 240000
+        timeout: 400000
         interval: 10000
 
     - name: Wait for front to be ready

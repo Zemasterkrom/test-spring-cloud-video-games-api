@@ -23,5 +23,5 @@ SET API_URL=%API_URL:https://=https-get://%
 Echo.%API_URL%| findstr /R /C:"^http-get://[a-Z0-9]*$" /C:"^https-get://[a-Z0-9]*$">NUL & IF %errorlevel% NEQ 0 (
     SET API_URL=http-get://%API_URL%
 )
-wait-on %API_URL%/video-games/all -t 120000 -i 10000 && ng serve --port %FRONT_SERVER_PORT%
+wait-on %API_URL%/video-games/all -t 400000 -i 10000 && ng serve --port %FRONT_SERVER_PORT%
 ENDLOCAL

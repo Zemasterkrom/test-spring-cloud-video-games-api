@@ -1,7 +1,7 @@
 {
   "name": "video-games-library-front",
   "license": "MIT",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "scripts": {
     "ng": "ng",
     "start": "run-script-os",

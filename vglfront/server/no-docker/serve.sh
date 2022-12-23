@@ -13,4 +13,4 @@ if ! [ $(echo "${API_URL}" | grep -E "http[s]?(-get)?://.*") ]; then
   API_URL="http-get://${API_URL}"
 fi
 
-wait-on ${API_URL}/video-games/all -t 120000 -i 10000 && ng serve --port ${FRONT_SERVER_PORT:-4200}
+wait-on ${API_URL}/video-games/all -t 400000 -i 10000 && ng serve --port ${FRONT_SERVER_PORT:-4200}
