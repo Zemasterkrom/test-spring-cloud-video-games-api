@@ -17,7 +17,7 @@ jobs:
         run: |
 
           sudo mkdir -p /etc/vbox
-          sudo chmod -R 775 /etc/vbox
+          sudo chmod -R 764 /etc/vbox
           echo '* 0.0.0.0/0 ::/0' > /etc/vbox/networks.conf
 
       #- name: Launch containers
