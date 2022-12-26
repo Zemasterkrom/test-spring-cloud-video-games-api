@@ -15,23 +15,15 @@ jobs:
       - name: Install Docker on macOS
         if: runner.os == 'macOS'
         run: |
-          brew install docker docker-machine docker-compose
-          brew update
-          brew upgrade docker docker-compose
-          mkdir -p ~/.docker/cli-plugins
-          ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
-          sudo mkdir -p /etc/vbox
-          sudo chmod -R 775 /etc/vbox
-          echo '* 0.0.0.0/0 ::/0' >> /etc/vbox/networks.conf
-          docker-machine create --driver virtualbox default
-          docker-machine env default
+          # https://github.com/docker/for-mac/issues/2359#issuecomment-943131345
+          brew install --cask docker
+          sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
+          open -a /Applications/Docker.app --args --unattended --accept-license
+          while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
+          echo "-- Docker is ready."
 
       - name: Launch containers
         run: |
-          if [ "$RUNNER_OS" == "macOS" ]; then
-              eval "$(docker-machine env default)"
-          fi
-          
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vglconfig vglservice
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vgldiscovery vglloadbalancer
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build
