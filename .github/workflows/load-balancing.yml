@@ -16,7 +16,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           # https://github.com/actions/runner-images/issues/1143
-          brew cask install docker
+          brew --cask install docker
           # allow the app to run without confirmation
           xattr -d -r com.apple.quarantine /Applications/Docker.app
           
