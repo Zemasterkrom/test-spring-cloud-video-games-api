@@ -17,16 +17,21 @@ jobs:
         run: |
           mkdir -p ~/.docker/machine/cache
           curl -Lo ~/.docker/machine/cache/boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v19.03.12/boot2docker.iso
-          brew install docker docker-machine
+          brew install docker docker-machine docker-compose
+          mkdir -p ~/.docker/cli-plugins
+          ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
           sudo mkdir -p /etc/vbox
           sudo chmod -R 775 /etc/vbox
           echo '* 0.0.0.0/0 ::/0' >> /etc/vbox/networks.conf
-          sudo docker-machine create --driver virtualbox default
-          sudo docker-machine env default
-          eval $(docker-machine env default)
+          docker-machine create --driver virtualbox default
+          docker-machine env default
 
       - name: Launch containers
         run: |
+          if [ "$RUNNER_OS" == "macOS" ]; then
+              eval "$(docker-machine env default)"
+          fi
+          
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vglconfig vglservice
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose build vgldiscovery vglloadbalancer
           GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose up -d --build
