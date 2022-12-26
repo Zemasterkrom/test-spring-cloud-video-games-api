@@ -11,9 +11,3 @@ runs:
     - name: Build Config server package
       shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: mvn -DfinalName=vglconfig -T 1C -Dmaven.test.skip -DskipTests -Dmaven.javadoc.skip=true clean package -f vglconfig/pom.xml
-
-    - name: Build npm front package
-      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
-      run: |
-        cd vglfront
-        npm install --progress=false
