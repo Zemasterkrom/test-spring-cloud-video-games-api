@@ -14,4 +14,6 @@ runs:
 
     - name: Build npm front package
       shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
-      run: npm install --progress=false --prefix ./vglfront
+      run: |
+        cd vglfront
+        npm install --progress=false
