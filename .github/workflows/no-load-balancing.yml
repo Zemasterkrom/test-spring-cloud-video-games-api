@@ -56,9 +56,7 @@ jobs:
           brew install docker docker-machine docker-compose
           mkdir -p ~/.docker/cli-plugins
           ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
-          sudo docker-machine create --driver virtualbox default
-          sudo docker-machine env default
-          eval "$(docker-machine env default)"
+          colima start
 
       - name: Launch containers
         run: GIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} docker compose --env-file no-load-balancing.env -f docker-compose-no-load-balancing.yml up -d --build
