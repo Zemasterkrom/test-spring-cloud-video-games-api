@@ -2,7 +2,7 @@ name: Build & test with Load Balancing
 on: push
 
 jobs:
-  build-test-lb:
+  build-test-nlb:
     name: ${{ matrix.os }} - Build & test with Load Balancing
     runs-on: ${{ matrix.os }}
     strategy:
