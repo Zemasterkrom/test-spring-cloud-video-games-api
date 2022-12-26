@@ -1,4 +1,4 @@
-FROM maven:3.8-eclipse-temurin-17 as builder
+FROM maven:3.8-eclipse-temurin-17-alpine as builder
 
 WORKDIR /usr/vglservice
 COPY src src/
