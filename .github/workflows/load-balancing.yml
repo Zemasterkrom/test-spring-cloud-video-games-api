@@ -36,7 +36,7 @@ jobs:
           brew install docker docker-machine docker-compose
           mkdir -p ~/.docker/cli-plugins
           ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
-          colima start --arch aarch64
+          colima start --cpu 2
 
       - name: Launch containers
         run: |
