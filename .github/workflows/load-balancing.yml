@@ -38,7 +38,7 @@ jobs:
         run: java -jar vglloadbalancer/target/vglloadbalancer.jar -XX:TieredStopAtLevel=1 &
 
       - name: Run npm front
-        run: npm run start --prefix vglfront &
+        run: npm run start --prefix ./vglfront &
 
       - name: Test API and front
         uses: ./.github/actions/test-lb
