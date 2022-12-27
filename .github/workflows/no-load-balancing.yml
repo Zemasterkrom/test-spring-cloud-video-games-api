@@ -23,11 +23,9 @@ jobs:
         run: echo $'\nFRONT_SERVER_PORT=4201' >> vglfront/.env
 
       - name: Run Config server
-        run: java -DGIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} -DGIT_CONFIG_REPOSITORY=https://github.com/Zemasterkrom/spring-cloud-video-games-api-config -XX:TieredStopAtLevel=1 -jar vglconfig/target/vglconfig.jar &
-
-      - name: Test
         run: |
-          sleep 10
+          java -DGIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} -DGIT_CONFIG_REPOSITORY=https://github.com/Zemasterkrom/spring-cloud-video-games-api-config -XX:TieredStopAtLevel=1 -jar vglconfig/target/vglconfig.jar &
+          sleep 5
           Receive-Job 1
 
       - name: Test curl
