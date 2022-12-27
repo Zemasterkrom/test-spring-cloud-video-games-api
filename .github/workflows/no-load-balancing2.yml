@@ -1,0 +1,32 @@
+name: Build & test without Load Balancing
+on: push
+
+jobs:
+  build-test-nlb:
+    name: ${{ matrix.os }} - Build & test without Load Balancing
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up CI/CD builders
+        uses: ./.github/actions/setup
+
+      - name: Build main components (API, Config server)
+        uses: ./.github/actions/build-main
+
+      # Run with Windows based environment
+      - name: Run Config server (Windows environment)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: cmd.exe /k "start /B java -DGIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} -DGIT_CONFIG_REPOSITORY=https://github.com/Zemasterkrom/spring-cloud-video-games-api-config -XX:TieredStopAtLevel=1 -jar vglconfig/target/vglconfig.jar"
+
+      - name: Test
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          sleep 15
+          curl 'http://localhost:8888/video-games-service.properties'
