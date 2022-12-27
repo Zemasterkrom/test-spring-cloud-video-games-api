@@ -25,11 +25,17 @@ jobs:
       - name: Run Config server
         run: java -DGIT_CONFIG_BRANCH=${{github.head_ref || github.ref_name}} -DGIT_CONFIG_REPOSITORY=https://github.com/Zemasterkrom/spring-cloud-video-games-api-config -XX:TieredStopAtLevel=1 -jar vglconfig/target/vglconfig.jar &
 
+      - name: Test
+        run: |
+          sleep 10
+          Receive-Job 1
+
       - name: Test curl
         shell: bash
         run: |
           sleep 50
-          (echo 1 && curl 'http://localhost:8888/video-games-service.properties') || (echo 2 && curl 'http://127.0.0.1:8888/video-games-service.properties')
+          cat $WINDIR/System32/drivers/etc/hosts
+          (echo 2 && curl 'http://127.0.0.1:8888/video-games-service.properties')
 
       - name: Run Spring Boot API
         run: java -DENABLE_LOAD_BALANCING=false -DALLOWED_ORIGINS=http://localhost:4201 -XX:TieredStopAtLevel=1 -jar vglservice/target/vglservice.jar
