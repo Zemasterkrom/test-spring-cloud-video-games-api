@@ -22,5 +22,5 @@ runs:
         cache-dependency-path: './vglfront/package-lock.json'
 
     - name: Set up Newman
-      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
       run: npm install -g newman
