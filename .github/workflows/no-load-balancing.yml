@@ -29,6 +29,9 @@ jobs:
           Receive-Job 1
           curl 'http://127.0.0.1:8888/video-games-service.properties'
 
+      - name: Test
+        run: curl 'http://127.0.0.1:8888/video-games-service.properties'
+
       - name: Run Spring Boot API
         run: java -DENABLE_LOAD_BALANCING=false -DALLOWED_ORIGINS=http://localhost:4201 -XX:TieredStopAtLevel=1 -jar vglservice/target/vglservice.jar
 
