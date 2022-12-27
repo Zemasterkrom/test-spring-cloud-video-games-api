@@ -3,7 +3,7 @@ description: Set up OpenJDK, Node, Newman
 runs:
   using: "composite"
   steps:
-    - name: Set up OpenJDK 11
+    - name: Set up Java
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
@@ -22,5 +22,5 @@ runs:
         cache-dependency-path: './vglfront/package-lock.json'
 
     - name: Set up Newman
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: npm install -g newman

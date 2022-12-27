@@ -26,10 +26,10 @@ runs:
         cache-dependency-path: './vglfront/package-lock.json'
 
     - name: Set up Newman
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: npm install -g newman
 
-    - name: Wait for API to be ready
+    - name: Wait for API to be ready (Load Balancing)
       uses: emilioschepis/wait-for-endpoint@v1.0.3
       with:
         url: ${{ steps.lb_env.outputs.api_url }}/video-games/add
@@ -46,7 +46,7 @@ runs:
         interval: 10000
 
     - name: Run Postman tests on Spring Boot server (Load Balancing)
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: |
         newman run vglservice/src/test/collections/vgl_api_safe_data.json -e vglservice/src/test/environments/vgl_api_loadbalancer_endpoint.json
         newman run vglservice/src/test/collections/vgl_api_unsafe_data.json -e vglservice/src/test/environments/vgl_api_loadbalancer_endpoint.json

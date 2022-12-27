@@ -5,15 +5,15 @@ runs:
   using: "composite"
   steps:
     - name: Build API package
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: mvn -DfinalName=vglservice -T 1C clean package -f vglservice/pom.xml
 
     - name: Build Config server package
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: mvn -DfinalName=vglconfig -T 1C clean package -f vglconfig/pom.xml
 
-    - name: Build npm front package
-      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+    - name: Build npm front packaging
+      shell: ${{ runner.os == 'Windows' && 'cmd' || 'sh' }}
       run: |
         cd vglfront
         npm install --progress=false
