@@ -45,7 +45,7 @@ jobs:
 
       - name: Test
         if: runner.os == 'Windows'
-        shell: cmd
+        shell: bash
         run: |
           sleep 15
           curl 'http://localhost:8888/video-games-service.properties'
