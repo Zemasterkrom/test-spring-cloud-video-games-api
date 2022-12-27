@@ -34,7 +34,7 @@ jobs:
       - name: Run npm front
         run: |
           cd vglfront
-          Start-Process powershell.exe -ArgumentList "-NoExit", "-Command", "npm run start"
+          npm run start
 
       - name: Test API and front
         uses: ./.github/actions/test-main
