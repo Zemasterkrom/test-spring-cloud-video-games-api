@@ -18,9 +18,6 @@ jobs:
       - name: Build main components (API, Config server)
         uses: ./.github/actions/build-main
 
-      - name: Check fake ternary
-        run: echo ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
-
       - name: Change default front server port
         shell: bash
         run: echo $'\nFRONT_SERVER_PORT=4201' >> vglfront/.env
@@ -34,7 +31,7 @@ jobs:
       - name: Run npm front
         run: |
           cd vglfront
-          npm run start
+          Start-Process powershell.exe -ArgumentList "-NoExit", "-Command", "npm run start"
 
       - name: Test API and front
         uses: ./.github/actions/test-main

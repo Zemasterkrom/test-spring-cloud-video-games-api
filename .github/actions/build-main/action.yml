@@ -11,3 +11,9 @@ runs:
     - name: Build Config server package
       shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
       run: mvn -DfinalName=vglconfig -T 1C clean package -f vglconfig/pom.xml
+
+    - name: Build npm front package
+      shell: ${{ runner.os == 'Windows' && 'pwsh' || 'sh' }}
+      run: |
+        cd vglfront
+        npm install --progress=false
